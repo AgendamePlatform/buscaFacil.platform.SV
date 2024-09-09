@@ -26,41 +26,45 @@ export default function ClientLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Estado para controlar el tamaño del sidebar
-    const [sidebarWidth, setSidebarWidth] = useState("w-[15%]");
+    // Estado para controlar si el sidebar está expandido o contraído
+    const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
     // Función para cambiar el tamaño del sidebar
     const toggleSidebarSize = () => {
-        setSidebarWidth(sidebarWidth === "w-[15%]" ? "w-[5%]" : "w-[15%]");
+        setIsSidebarExpanded(!isSidebarExpanded);
     };
 
     return (
-        <div className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}>
-            {/* Contenedor Principal */}
-            <div className="flex h-full w-screen bg-gray-100">
-                {/* Sidebar izquierdo con bordes redondeados arriba y abajo */}
-                <aside className={`${sidebarWidth} bg-bgdark flex flex-col justify-between p-4 text-white rounded-r-3xl overflow-hidden shadow-lg transition-all duration-300`}>
-                    <div className="flex flex-col items-center space-y-8">
-                        {/* Iconos del sidebar */}
-                        <button className="hover:bg-gray-700 p-5 rounded-full transition duration-300 shadow-lg">
-                            <FiHome size={28} />
-                        </button>
-                        <button className="hover:bg-gray-700 p-5 rounded-full transition duration-300 shadow-lg">
-                            <FiPieChart size={28} />
-                        </button>
-                        <button className="hover:bg-gray-700 p-5 rounded-full transition duration-300 shadow-lg">
-                            <FiSettings size={28} />
-                        </button>
-                    </div>
-                </aside>
+        <div className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex overflow-hidden`}>
+            {/* Sidebar izquierdo con bordes redondeados arriba y abajo */}
+            <aside className={`${isSidebarExpanded ? 'w-40' : 'w-20'} bg-bgdark flex flex-col justify-between p-4 text-white rounded-r-3xl shadow-lg transition-all duration-300`}>
+                <div className="flex flex-col space-y-8">
+                    {/* Iconos del sidebar */}
+                    <button className="group py-2 rounded-full flex items-center space-x-4 transition duration-300 shadow-lg">
+                        <FiHome size={36} className="min-w-[36px] group-hover:bg-green-600 rounded-full p-2 transition duration-300" />
+                        {isSidebarExpanded && <span className="text-sm">Home</span>}
+                    </button>
+                    <button className="group py-2 rounded-full flex items-center space-x-4 transition duration-300 shadow-lg">
+                        <FiPieChart size={36} className="min-w-[36px] group-hover:bg-green-600 rounded-full p-2 transition duration-300" />
+                        {isSidebarExpanded && <span className="text-sm">Ventas</span>}
+                    </button>
+                    <button className="group py-2 rounded-full flex items-center space-x-4 transition duration-300 shadow-lg">
+                        <FiSettings size={36} className="min-w-[36px] group-hover:bg-green-600 rounded-full p-2 transition duration-300" />
+                        {isSidebarExpanded && <span className="text-sm">Informes</span>}
+                    </button>
+                </div>
+            </aside>
+
+
+
+
+            <div className="flex-1 flex flex-col h-full overflow-hidden">
+                {/* Usamos el componente Header */}
+                <Header isSidebarExpanded={isSidebarExpanded} toggleSidebarSize={toggleSidebarSize} />
 
                 {/* Contenido Principal */}
-                <main className="flex-1 flex flex-col bg-white rounded-tl-3xl rounded-bl-3xl shadow-lg overflow-auto">
-                    {/* Usamos el componente Header */}
-                    <Header sidebarWidth={sidebarWidth} toggleSidebarSize={toggleSidebarSize} />
-
-                    {/* Contenido con scroll */}
-                    <section className="p-6 w-full overflow-auto">
+                <main className="flex-1 rounded-tl-3xl rounded-bl-3xl shadow-lg overflow-auto">
+                    <section className="p-[0.5%]">
                         {children}
                     </section>
                 </main>

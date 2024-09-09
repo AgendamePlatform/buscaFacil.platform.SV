@@ -2,19 +2,19 @@ import React from 'react';
 import { FiSearch, FiBell, FiUser } from 'react-icons/fi';
 
 interface HeaderProps {
-    sidebarWidth: string;
+    isSidebarExpanded: boolean;
     toggleSidebarSize: () => void;
 }
 
-export default function Header({ sidebarWidth, toggleSidebarSize }: HeaderProps) {
+export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderProps) {
     return (
-        <header className="w-full h-24 bg-white flex justify-between items-center p-6 ">
+        <header className="w-full h-24 bg-white flex justify-between items-center p-6">
             {/* Botón para cambiar el tamaño del sidebar */}
             <button
                 className="p-3 bg-gray-300 rounded-lg mr-[2%] hover:bg-gray-400 transition duration-300 shadow-lg"
                 onClick={toggleSidebarSize}
             >
-                {sidebarWidth === "w-[15%]" ? "⬅️" : "➡️"}
+                {isSidebarExpanded ? "⬅️" : "➡️"}
             </button>
 
             {/* Filtro y barra de búsqueda */}
@@ -34,7 +34,7 @@ export default function Header({ sidebarWidth, toggleSidebarSize }: HeaderProps)
                     <input
                         type="text"
                         placeholder="Buscar..."
-                        className="bg-gray-100 border text-gray-600  border-gray-300 rounded-lg p-4 w-full pl-12 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-300 h-14 transition duration-300"
+                        className="bg-gray-100 border text-gray-600 border-gray-300 rounded-lg p-4 w-full pl-12 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-300 h-14 transition duration-300"
                     />
                     <FiSearch className="absolute left-4 text-gray-400" size={22} />
                 </div>
