@@ -1,6 +1,25 @@
-import { signIn } from 'next-auth/react';
+'use client';
 
-export default function page() {
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+export default function LoginPage() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    // Redirigimos si el usuario ya está autenticado
+    useEffect(() => {
+        if (status === 'authenticated') {
+            router.push('/'); // Redirigir a la página principal
+        }
+    }, [status, router]);
+
+    // Si el usuario está autenticándose, mostramos un mensaje de carga
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="flex items-center justify-center h-screen bg-gray-900">
             <div className="bg-white p-10 rounded-lg shadow-lg text-center">

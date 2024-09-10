@@ -72,7 +72,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                         <button
                             onClick={async () => {
                                 await signOut({
-                                    callbackUrl: "/",
+                                    callbackUrl: "/login",
                                 });
                             }}
                             className="hover:text-red-500 transition duration-300"

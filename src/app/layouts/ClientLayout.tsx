@@ -1,11 +1,9 @@
-"use client"; // Marcamos este componente como un Client Component
+'use client'; // Esto indica que es un Client Component
 
 import React, { useState } from "react";
 import localFont from "next/font/local";
 import "../globals.css"; // Asegúrate de que la ruta esté correcta según tu estructura de proyecto
 import Header from "@/components/Header"; // Importamos el Header
-
-// Importamos iconos de react-icons
 import { FiHome, FiPieChart, FiSettings } from 'react-icons/fi';
 
 // Importación de las fuentes locales
@@ -26,17 +24,14 @@ export default function ClientLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Estado para controlar si el sidebar está expandido o contraído
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
-    // Función para cambiar el tamaño del sidebar
     const toggleSidebarSize = () => {
         setIsSidebarExpanded(!isSidebarExpanded);
     };
 
     return (
         <div className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex overflow-hidden`}>
-            {/* Sidebar izquierdo con bordes redondeados arriba y abajo */}
             <aside className={`${isSidebarExpanded ? 'w-40' : 'w-20'} bg-bgdark flex flex-col justify-between p-4 text-white rounded-r-3xl shadow-lg transition-all duration-300`}>
                 <div className="flex flex-col space-y-8">
                     {/* Iconos del sidebar */}
@@ -55,18 +50,10 @@ export default function ClientLayout({
                 </div>
             </aside>
 
-
-
-
             <div className="flex-1 flex flex-col h-full overflow-hidden">
-                {/* Usamos el componente Header */}
                 <Header isSidebarExpanded={isSidebarExpanded} toggleSidebarSize={toggleSidebarSize} />
-
-                {/* Contenido Principal */}
                 <main className="flex-1 rounded-tl-3xl rounded-bl-3xl shadow-lg overflow-auto">
-                    <section className="p-[0.5%]">
-                        {children}
-                    </section>
+                    <section className="p-[0.5%]">{children}</section>
                 </main>
             </div>
         </div>
