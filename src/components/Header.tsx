@@ -1,5 +1,9 @@
+'use client'; // Indicamos que este componente es del lado del cliente
+
 import React from 'react';
-import { FiSearch, FiBell, FiUser } from 'react-icons/fi';
+import { FiSearch, FiBell, FiLogOut } from 'react-icons/fi'; // Importamos el icono de logout
+import Link from 'next/link';
+import { signIn, useSession, signOut } from 'next-auth/react';
 
 interface HeaderProps {
     isSidebarExpanded: boolean;
@@ -7,6 +11,8 @@ interface HeaderProps {
 }
 
 export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderProps) {
+    const { data: session } = useSession(); // Usamos el hook de sesión de NextAuth
+
     return (
         <header className="w-full h-24 bg-white flex justify-between items-center p-6">
             {/* Botón para cambiar el tamaño del sidebar */}
@@ -40,15 +46,48 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                 </div>
             </div>
 
-            {/* Iconos de la derecha */}
+            {/* Iconos y autenticación */}
             <div className="flex items-center space-x-6">
                 <button className="relative hover:text-orange-500 transition duration-300">
                     <FiBell size={35} className='text-bgdark hover:text-red-500' />
                     <span className="absolute top-0 right-0 text-xs text-white bg-orange-400 rounded-full h-5 w-5 flex justify-center items-center">3</span>
                 </button>
-                <button className=" transition duration-300">
-                    <FiUser size={35} className='text-bgdark hover:text-red-500' />
-                </button>
+
+                {session?.user ? (
+                    <div className="flex items-center space-x-4">
+                        {/* Imagen del usuario */}
+                        {session.user.image && (
+                            <img
+                                src={session.user.image}
+                                alt="User image"
+                                className="w-10 h-10 rounded-full border-2 border-gray-300 shadow-md"
+                            />
+                        )}
+                        {/* Nombre del usuario */}
+                        <span className="font-medium text-gray-800">
+                            {session.user.name}
+                        </span>
+
+                        {/* Botón de Logout con icono */}
+                        <button
+                            onClick={async () => {
+                                await signOut({
+                                    callbackUrl: "/",
+                                });
+                            }}
+                            className="hover:text-red-500 transition duration-300"
+                        >
+                            <FiLogOut size={28} />
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => signIn('google')}
+                        className="bg-sky-400 px-3 py-2 rounded"
+                    >
+                        Sign In
+                    </button>
+                )}
             </div>
         </header>
     );

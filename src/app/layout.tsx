@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ClientLayout from "./layouts/ClientLayout";
+import { Providers } from '@/app/Providers'
 
 // Metadatos de la página
 export const metadata: Metadata = {
@@ -16,9 +17,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
         {/* Aquí renderizamos el ClientLayout */}
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <Providers>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </Providers>
       </body>
     </html>
   );
