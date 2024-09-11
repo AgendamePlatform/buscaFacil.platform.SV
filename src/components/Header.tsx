@@ -27,7 +27,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
             <div className="flex items-center w-full space-x-4">
                 {/* Combobox para "Filtrar por" */}
                 <div className="relative mr-[2%]">
-                    <select className="bg-black text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-gray-900 transition duration-300 shadow-md">
+                    <select className="bg-azulito text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-gray-900 transition duration-300 shadow-md">
                         <option value="">Filtrar por</option>
                         <option value="opcion1">Opción 1</option>
                         <option value="opcion2">Opción 2</option>

@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         bgdark: "#0B050E",
         bgligth: "#ffff",
+        azulito: "#3d87f4",
         negroNav: "#1e1e1e",
         inputClaro: "#f3f0ff",
         inputOscuro: "#404040"
