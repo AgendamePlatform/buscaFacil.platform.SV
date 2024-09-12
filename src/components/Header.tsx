@@ -1,8 +1,7 @@
-'use client'; // Indicamos que este componente es del lado del cliente
+'use client';
 
 import React from 'react';
-import { FiSearch, FiBell, FiLogOut } from 'react-icons/fi'; // Importamos el icono de logout
-import Link from 'next/link';
+import { FiSearch, FiBell, FiLogOut } from 'react-icons/fi';
 import { signIn, useSession, signOut } from 'next-auth/react';
 
 interface HeaderProps {
@@ -12,6 +11,8 @@ interface HeaderProps {
 
 export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderProps) {
     const { data: session } = useSession(); // Usamos el hook de sesión de NextAuth
+
+
 
     return (
         <header className="w-full h-24 bg-white flex justify-between items-center p-6">

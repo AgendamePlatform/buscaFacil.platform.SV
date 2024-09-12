@@ -1,86 +1,86 @@
 'use client'; // Asegura que esto se ejecute en el cliente
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; // Importa el CSS de Leaflet
 
 export default function LeafletMap() {
     const mapRef = useRef<HTMLDivElement>(null);
+    const [isClient, setIsClient] = useState(false); // Estado para saber si estamos en el cliente
+    const [selectedPosition, setSelectedPosition] = useState<{ lat: number, lng: number } | null>(null);
 
     useEffect(() => {
-        if (mapRef.current) {
-            const latEmpresa = 13.68731618691775; // Coordenadas de la empresa
-            const lngEmpresa = -89.81834427603658;
-            const radioPermitido = 200; // Radio en metros
+        setIsClient(true); // Asegura que solo se ejecute en el cliente
+    }, []);
+
+    useEffect(() => {
+        if (isClient && mapRef.current) { // Solo ejecuta si estamos en el cliente y el mapa está disponible
+            const lat = 13.698744628074294; // Coordenada de latitud
+            const lng = -89.79988832735656; // Coordenada de longitud
 
             // Inicializar el mapa
-            const map = L.map(mapRef.current).setView([latEmpresa, lngEmpresa], 17);
+            const map = L.map(mapRef.current).setView([lat, lng], 10);
 
-            // Cargar la capa de mapas
+            // Cargar la capa de mosaicos de OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(map);
 
-            // Agregar marcador de la empresa
-            L.marker([latEmpresa, lngEmpresa])
-                .addTo(map)
-                .bindPopup('<b>QR CHECK ✔</b><br>Ubicación principal.')
+            // Agregar un marcador en la ubicación especificada con una ventana emergente personalizada
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup('<b>Mi ubicación</b><br>13.698744628074294, -89.79988832735656', { closeButton: false })
                 .openPopup();
 
-            // Dibujar círculo que representa el rango permitido
-            L.circle([latEmpresa, lngEmpresa], {
-                color: 'green',
-                fillColor: '#57ef57a3',
-                fillOpacity: 0.3,
-                radius: radioPermitido,
-            }).addTo(map);
+            // Cargar el contorno de El Salvador desde el archivo GeoJSON usando `fetch`
+            fetch('/data/geoBoundaries-SLV-ADM0_simplified.geojson')
+                .then((response) => response.json())
+                .then((geoJsonData) => {
+                    // Agregar el contorno de El Salvador al mapa
+                    L.geoJSON(geoJsonData, {
+                        style: {
+                            color: 'blue', // Color del borde
+                            weight: 2, // Grosor de la línea
+                            opacity: 0.7, // Opacidad
+                            fillColor: 'blue',
+                            fillOpacity: 0.1, // Relleno del contorno
+                        },
+                    }).addTo(map);
+                });
 
-            // Array de trabajadores ficticios
-            const trabajadores = [
-                { nombre: 'Juan Pérez', lat: 13.68731618691775, lng: -89.81805008686588 },
-                { nombre: 'Ana López', lat: 13.6918, lng: -89.8184 },
-                { nombre: 'Carlos Martínez', lat: 13.6917, lng: -89.8185 },
-                { nombre: 'María Rodríguez', lat: 13.6919, lng: -89.8183 },
-                { nombre: 'Luis Gómez', lat: 13.692, lng: -89.8186 },
-            ];
+            // Agregar interacción para seleccionar nuevos puntos en el mapa
+            map.on('click', function (e: L.LeafletMouseEvent) {
+                const { lat, lng } = e.latlng;
+                setSelectedPosition({ lat, lng });
 
-            // Función para calcular la distancia entre dos puntos (coordenadas en grados)
-            const calcularDistancia = (latitud1: number, longitud1: number, latitud2: number, longitud2: number) => {
-                const radioTierra = 6371e3; // Radio de la Tierra en metros
-                const latitudRadianes1 = (latitud1 * Math.PI) / 180;
-                const latitudRadianes2 = (latitud2 * Math.PI) / 180;
-                const diferenciaLatitud = ((latitud2 - latitud1) * Math.PI) / 180;
-                const diferenciaLongitud = ((longitud2 - longitud1) * Math.PI) / 180;
+                // Eliminar todos los marcadores anteriores
+                map.eachLayer(function (layer) {
+                    if (layer instanceof L.Marker) {
+                        map.removeLayer(layer);
+                    }
+                });
 
-                const a =
-                    Math.sin(diferenciaLatitud / 2) * Math.sin(diferenciaLatitud / 2) +
-                    Math.cos(latitudRadianes1) * Math.cos(latitudRadianes2) *
-                    Math.sin(diferenciaLongitud / 2) * Math.sin(diferenciaLongitud / 2);
-
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-                return radioTierra * c;
-            }
-
-            // Procesar cada trabajador y agregarlo al mapa
-            trabajadores.forEach((trabajador) => {
-                const distancia = calcularDistancia(latEmpresa, lngEmpresa, trabajador.lat, trabajador.lng);
-
-                // Crear el marcador en el mapa para el trabajador
-                const marker = L.marker([trabajador.lat, trabajador.lng], {
-                    icon: L.divIcon({ className: 'custom-marker' }),
-                })
+                // Colocar un nuevo marcador en la ubicación seleccionada
+                L.marker([lat, lng])
                     .addTo(map)
-                    .bindPopup(`<b>${trabajador.nombre}</b><br>Distancia a la empresa: ${distancia.toFixed(2)} metros`);
-
-                // Aquí podrías agregar más lógica para manejar los trabajadores
+                    .bindPopup(`<b>Coordenadas seleccionadas</b><br>Latitud: ${lat}<br>Longitud: ${lng}`, { closeButton: false })
+                    .openPopup();
             });
         }
-    }, []);
+    }, [isClient]);
 
     return (
-        <div style={{ width: '100%', height: '500px' }} ref={mapRef}>
-            {/* El mapa será renderizado dentro de este div */}
+        <div className="p-4 flex flex-col items-center justify-center h-screen">
+            {/* Mapa en una tarjeta con estilo TailwindCSS */}
+            <div className="w-full h-full rounded-lg shadow-lg border border-gray-300 overflow-hidden mb-4" ref={mapRef}>
+                {/* El mapa será renderizado dentro de este div */}
+            </div>
+            {selectedPosition && (
+                <div className="text-center bg-gray-50 p-4 rounded-lg shadow-md">
+                    <h3 className="text-lg font-semibold mb-2">Coordenadas seleccionadas</h3>
+                    <p><strong>Latitud:</strong> {selectedPosition.lat}</p>
+                    <p><strong>Longitud:</strong> {selectedPosition.lng}</p>
+                </div>
+            )}
         </div>
     );
 }

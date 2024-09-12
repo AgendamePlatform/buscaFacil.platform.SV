@@ -36,14 +36,14 @@ export default function Page() {
         fetchRoles();
     }, [isClient]); // Dependemos de isClient para asegurarnos de que la llamada solo ocurra en el cliente
 
-    if (!isClient) return null; // Evitamos renderizar hasta estar seguros de que estamos en el cliente
-    if (loading) return <Loader />;
-    if (error) return <ErrorPage />;
+    // if (!isClient) return null; // Evitamos renderizar hasta estar seguros de que estamos en el cliente
+    // if (loading) return <Loader />;
+    // if (error) return <ErrorPage />;
 
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-6">Roles registrados</h1>
-            <div className="bg-white shadow-md rounded-lg p-6">
+            {/* <div className="bg-white shadow-md rounded-lg p-6">
                 {roles.length > 0 ? (
                     <ul className="space-y-4">
                         {roles.map((role) => (
@@ -71,7 +71,7 @@ export default function Page() {
                 ) : (
                     <p className="text-gray-500">No se encontraron roles.</p>
                 )}
-            </div>
+            </div> */}
             <Maps />
         </div>
     );
