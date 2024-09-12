@@ -29,3 +29,20 @@
   scrollbar-color: #888 #e0e0e0;
   /* Color del thumb y track */
 }
+
+.custom-popup {
+  backdrop-filter: blur(10px);
+  /* Aplicar el efecto de blur */
+  background-color: rgba(255, 255, 255, 0.6);
+  /* Fondo semitransparente */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  /* Borde semitransparente */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  padding: 10px;
+  /* Padding */
+  color: black;
+  /* Texto en color negro */
+  font-size: 14px;
+  /* Tamaño del texto */
+}

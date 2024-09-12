@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'; // Importamos el hook usePathname
 import localFont from "next/font/local";
 import "../globals.css";
 import Header from "@/components/Header";
-import { FiHome, FiPieChart, FiSettings } from 'react-icons/fi';
+import { FiHome, FiPieChart, FiSettings, FiBarChart, FiMap, FiHelpCircle } from 'react-icons/fi';
 
 // Importación de las fuentes locales
 const geistSans = localFont({
@@ -39,52 +39,54 @@ export default function ClientLayout({
     return (
         <div className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex overflow-hidden`}>
             {/* Sidebar */}
-            <aside className={`${isSidebarExpanded ? 'w-[13%]' : 'w-[4%]'} flex flex-col justify-between p-4 text-black rounded-r-3xl shadow-lg transition-all duration-300`}>
+            <aside className={`${isSidebarExpanded ? 'w-[13%]' : 'w-[4%]'} flex flex-col justify-between p-4 text-black rounded-r-3xl shadow-lg bg-azulito transition-all duration-300 border-r border-border`}>
                 {/* Menu principal */}
                 <div className="flex flex-col space-y-6">
-                    <h2 className={`${isSidebarExpanded ? 'block' : 'hidden'} text-gray-500 text-sm uppercase tracking-wider`}>Main Menu</h2>
+                    <h2 className={`${isSidebarExpanded ? 'block' : 'hidden'} text-gray-200 text-sm uppercase tracking-wider`}>Main Menu</h2>
 
-                    <Link href="/" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
-                        <FiHome size={24} className={`${isActive('/') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Dashboard</span>}
+                    <Link href="/" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/') ? 'bg-blue-800 text-white' : 'hover:bg-blue-500 text-gray-200'}`}>
+                        <FiHome size={24} className={`${isActive('/') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Dashboard</span>}
                     </Link>
 
-                    <Link href="/marketplace" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/marketplace') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
-                        <FiPieChart size={24} className={`${isActive('/marketplace') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Marketplace</span>}
+                    <Link href="/marketplace" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/marketplace') ? 'bg-blue-800 text-white' : 'hover:bg-blue-500 text-gray-200'}`}>
+                        <FiPieChart size={24} className={`${isActive('/marketplace') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Marketplace</span>}
                     </Link>
 
-                    <Link href="/reports" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/reports') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
-                        <FiSettings size={24} className={`${isActive('/reports') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Reports</span>}
+                    <Link href="/reports" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/reports') ? 'bg-blue-800 text-white' : 'hover:bg-blue-500 text-gray-200'}`}>
+                        <FiBarChart size={24} className={`${isActive('/reports') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Reports</span>}
                     </Link>
-                    <Link href="/maps" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/maps') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
-                        <FiSettings size={24} className={`${isActive('/reports') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Mapa</span>}
+
+                    <Link href="/maps" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/maps') ? 'bg-blue-800 text-white' : 'hover:bg-blue-500 text-gray-200'}`}>
+                        <FiMap size={24} className={`${isActive('/maps') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Mapa</span>}
                     </Link>
                 </div>
 
                 {/* Menu de otros */}
                 <div className="flex flex-col space-y-6">
-                    <h2 className={`${isSidebarExpanded ? 'block' : 'hidden'} text-gray-500 text-sm uppercase tracking-wider`}>Others</h2>
+                    <h2 className={`${isSidebarExpanded ? 'block' : 'hidden'} text-gray-200 text-sm uppercase tracking-wider`}>Others</h2>
 
-                    <Link href="/settings" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/settings') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
-                        <FiSettings size={24} className={`${isActive('/settings') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Settings</span>}
+                    <Link href="/settings" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/settings') ? 'bg-blue-800 text-white' : 'hover:bg-blue-500 text-gray-200'}`}>
+                        <FiSettings size={24} className={`${isActive('/settings') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Settings</span>}
                     </Link>
 
-                    <Link href="/help" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/help') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
-                        <FiSettings size={24} className={`${isActive('/help') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
-                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Help Center</span>}
+                    <Link href="/help" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/help') ? 'bg-blue-800 text-white' : 'hover:bg-blue-500 text-gray-200'}`}>
+                        <FiHelpCircle size={24} className={`${isActive('/help') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Help Center</span>}
                     </Link>
                 </div>
             </aside>
 
+
             {/* Main content */}
-            <div className="flex-1 flex flex-col h-full overflow-hidden">
+            <div className="flex-1 flex flex-col  h-full overflow-hidden bg-bgprimaryLigth dark:bg-bgprimaryDark">
                 <Header isSidebarExpanded={isSidebarExpanded} toggleSidebarSize={toggleSidebarSize} />
-                <main className="flex-1 rounded-tl-3xl rounded-bl-3xl overflow-auto bg-bgligth dark:bg-bgdark shadow-lg">
-                    <section className="p-6">{children}</section>
+                <main className="flex-1 rounded-tl-3xl overflow-auto shadow-lg">
+                    <section className="">{children}</section>
                 </main>
             </div>
         </div>

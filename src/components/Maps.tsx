@@ -52,17 +52,30 @@ export default function LeafletMap() {
                 const { lat, lng } = e.latlng;
                 setSelectedPosition({ lat, lng });
 
-                // Eliminar todos los marcadores anteriores
+                // Eliminar todos los marcadores anteriores antes de añadir uno nuevo
                 map.eachLayer(function (layer) {
+                    // Asegurarse de que el layer tenga un popup antes de acceder a getContent()
                     if (layer instanceof L.Marker) {
-                        map.removeLayer(layer);
+                        const popup = layer.getPopup();
+                        const content = popup?.getContent();
+
+                        // Verificar si el contenido es de tipo string antes de usar .includes()
+                        if (typeof content === 'string' && !content.includes('Mi ubicación')) {
+                            map.removeLayer(layer);
+                        }
                     }
                 });
 
-                // Colocar un nuevo marcador en la ubicación seleccionada
+                // Colocar un nuevo marcador en la ubicación seleccionada con un efecto de vidrio borroso
                 L.marker([lat, lng])
                     .addTo(map)
-                    .bindPopup(`<b>Coordenadas seleccionadas</b><br>Latitud: ${lat}<br>Longitud: ${lng}`, { closeButton: false })
+                    .bindPopup(
+                        `<div class="custom-popup">
+                            <b>Coordenadas seleccionadas</b><br>
+                            Latitud: ${lat}<br>
+                            Longitud: ${lng}
+                        </div>`, { closeButton: false }
+                    )
                     .openPopup();
             });
         }
@@ -74,13 +87,6 @@ export default function LeafletMap() {
             <div className="w-full h-full" ref={mapRef}>
                 {/* El mapa será renderizado dentro de este div */}
             </div>
-            {selectedPosition && (
-                <div className="text-center bg-gray-50 p-4 rounded-lg shadow-md absolute bottom-4 left-4">
-                    <h3 className="text-lg font-semibold mb-2">Coordenadas seleccionadas</h3>
-                    <p><strong>Latitud:</strong> {selectedPosition.lat}</p>
-                    <p><strong>Longitud:</strong> {selectedPosition.lng}</p>
-                </div>
-            )}
         </div>
     );
 }

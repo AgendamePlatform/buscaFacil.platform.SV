@@ -4,7 +4,7 @@ import { Providers } from '@/app/Providers'
 
 // Metadatos de la página
 export const metadata: Metadata = {
-  title: "Agendame SV",
+  title: "Busca Facil",
   description: "Plataforma para poder conectar con servidores de servicios y productos con los clientes",
 };
 

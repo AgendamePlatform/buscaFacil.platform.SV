@@ -41,7 +41,7 @@ export default function Page() {
     // if (error) return <ErrorPage />;
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 bg-bgprimaryLigth dark:bg-primaryDark">
             <h1 className="text-3xl font-bold mb-6">Roles registrados</h1>
             {/* <div className="bg-white shadow-md rounded-lg p-6">
                 {roles.length > 0 ? (
