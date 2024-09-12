@@ -39,7 +39,7 @@ export default function ClientLayout({
     return (
         <div className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex overflow-hidden`}>
             {/* Sidebar */}
-            <aside className={`${isSidebarExpanded ? 'w-60' : 'w-20'} flex flex-col justify-between p-4 text-black rounded-r-3xl shadow-lg transition-all duration-300`}>
+            <aside className={`${isSidebarExpanded ? 'w-[13%]' : 'w-[4%]'} flex flex-col justify-between p-4 text-black rounded-r-3xl shadow-lg transition-all duration-300`}>
                 {/* Menu principal */}
                 <div className="flex flex-col space-y-6">
                     <h2 className={`${isSidebarExpanded ? 'block' : 'hidden'} text-gray-500 text-sm uppercase tracking-wider`}>Main Menu</h2>
@@ -57,6 +57,10 @@ export default function ClientLayout({
                     <Link href="/reports" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/reports') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
                         <FiSettings size={24} className={`${isActive('/reports') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
                         {isSidebarExpanded && <span className="text-gray-800 font-medium">Reports</span>}
+                    </Link>
+                    <Link href="/maps" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/maps') ? 'bg-blue-200 text-blue-600' : 'hover:bg-blue-100'}`}>
+                        <FiSettings size={24} className={`${isActive('/reports') ? 'text-blue-600' : 'text-blue-500 group-hover:text-blue-600'}`} />
+                        {isSidebarExpanded && <span className="text-gray-800 font-medium">Mapa</span>}
                     </Link>
                 </div>
 
@@ -79,7 +83,7 @@ export default function ClientLayout({
             {/* Main content */}
             <div className="flex-1 flex flex-col h-full overflow-hidden">
                 <Header isSidebarExpanded={isSidebarExpanded} toggleSidebarSize={toggleSidebarSize} />
-                <main className="flex-1 rounded-tl-3xl rounded-bl-3xl overflow-auto bg-white shadow-lg">
+                <main className="flex-1 rounded-tl-3xl rounded-bl-3xl overflow-auto bg-bgligth dark:bg-bgdark shadow-lg">
                     <section className="p-6">{children}</section>
                 </main>
             </div>

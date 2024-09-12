@@ -1,4 +1,4 @@
-'use client'; // Asegura que esto se ejecute en el cliente
+'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
@@ -42,7 +42,7 @@ export default function LeafletMap() {
                             weight: 2, // Grosor de la línea
                             opacity: 0.7, // Opacidad
                             fillColor: 'blue',
-                            fillOpacity: 0.1, // Relleno del contorno
+                            fillOpacity: 0.05, // Relleno del contorno
                         },
                     }).addTo(map);
                 });
@@ -69,13 +69,13 @@ export default function LeafletMap() {
     }, [isClient]);
 
     return (
-        <div className="p-4 flex flex-col items-center justify-center h-screen">
-            {/* Mapa en una tarjeta con estilo TailwindCSS */}
-            <div className="w-full h-full rounded-lg shadow-lg border border-gray-300 overflow-hidden mb-4" ref={mapRef}>
+        <div className="flex-1 flex flex-col items-center justify-center w-full h-screen">
+            {/* Mapa que ocupa todo el espacio */}
+            <div className="w-full h-full" ref={mapRef}>
                 {/* El mapa será renderizado dentro de este div */}
             </div>
             {selectedPosition && (
-                <div className="text-center bg-gray-50 p-4 rounded-lg shadow-md">
+                <div className="text-center bg-gray-50 p-4 rounded-lg shadow-md absolute bottom-4 left-4">
                     <h3 className="text-lg font-semibold mb-2">Coordenadas seleccionadas</h3>
                     <p><strong>Latitud:</strong> {selectedPosition.lat}</p>
                     <p><strong>Longitud:</strong> {selectedPosition.lng}</p>

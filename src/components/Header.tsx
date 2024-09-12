@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { FiSearch, FiBell, FiLogOut } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiSearch, FiBell, FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
 import { signIn, useSession, signOut } from 'next-auth/react';
 
 interface HeaderProps {
@@ -10,15 +10,39 @@ interface HeaderProps {
 }
 
 export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderProps) {
-    const { data: session } = useSession(); // Usamos el hook de sesión de NextAuth
+    const { data: session } = useSession();
+    const [darkMode, setDarkMode] = useState(false);
 
+    // Manejar el cambio del tema claro/oscuro
+    const toggleDarkMode = () => {
+        const newDarkMode = !darkMode;
+        setDarkMode(newDarkMode);
+        if (newDarkMode) {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark'); // Guardar preferencia en localStorage
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    };
 
+    // Efecto para sincronizar el tema con la preferencia del usuario
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            setDarkMode(true);
+            document.documentElement.classList.add('dark');
+        } else {
+            setDarkMode(false);
+            document.documentElement.classList.remove('dark');
+        }
+    }, []);
 
     return (
-        <header className="w-full h-24 bg-white flex justify-between items-center p-6">
+        <header className="w-full h-24 bg-bgligth dark:bg-bgdark flex justify-between items-center p-6">
             {/* Botón para cambiar el tamaño del sidebar */}
             <button
-                className="p-3 bg-gray-300 rounded-lg mr-[2%] hover:bg-gray-400 transition duration-300 shadow-lg"
+                className="p-3 bg-gray-300 dark:bg-gray-700 rounded-lg mr-[2%] hover:bg-gray-400 dark:hover:bg-gray-600 transition duration-300 shadow-lg"
                 onClick={toggleSidebarSize}
             >
                 {isSidebarExpanded ? "⬅️" : "➡️"}
@@ -28,7 +52,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
             <div className="flex items-center w-full space-x-4">
                 {/* Combobox para "Filtrar por" */}
                 <div className="relative mr-[2%]">
-                    <select className="bg-azulito text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-gray-900 transition duration-300 shadow-md">
+                    <select className="bg-azulito dark:bg-gray-700 dark:text-white text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-gray-900 transition duration-300 shadow-md">
                         <option value="">Filtrar por</option>
                         <option value="opcion1">Opción 1</option>
                         <option value="opcion2">Opción 2</option>
@@ -41,17 +65,25 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                     <input
                         type="text"
                         placeholder="Buscar..."
-                        className="bg-gray-100 border text-gray-600 border-gray-300 rounded-lg p-4 w-full pl-12 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-300 h-14 transition duration-300"
+                        className="bg-gray-100 dark:bg-gray-700 dark:text-white border text-gray-600 border-gray-300 dark:border-gray-600 rounded-lg p-4 w-full pl-12 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-300 h-14 transition duration-300"
                     />
-                    <FiSearch className="absolute left-4 text-gray-400" size={22} />
+                    <FiSearch className="absolute left-4 text-gray-400 dark:text-white" size={22} />
                 </div>
             </div>
 
             {/* Iconos y autenticación */}
             <div className="flex items-center space-x-6">
                 <button className="relative hover:text-orange-500 transition duration-300">
-                    <FiBell size={35} className='text-bgdark hover:text-red-500' />
+                    <FiBell size={35} className="text-bgdark dark:text-white hover:text-red-500" />
                     <span className="absolute top-0 right-0 text-xs text-white bg-orange-400 rounded-full h-5 w-5 flex justify-center items-center">3</span>
+                </button>
+
+                {/* Botón para cambiar entre modo claro y oscuro */}
+                <button
+                    onClick={toggleDarkMode}
+                    className="hover:text-blue-500 dark:hover:text-yellow-400 transition duration-300"
+                >
+                    {darkMode ? <FiSun size={28} /> : <FiMoon size={28} />}
                 </button>
 
                 {session?.user ? (
@@ -61,11 +93,11 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                             <img
                                 src={session.user.image}
                                 alt="User image"
-                                className="w-10 h-10 rounded-full border-2 border-gray-300 shadow-md"
+                                className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600 shadow-md"
                             />
                         )}
                         {/* Nombre del usuario */}
-                        <span className="font-medium text-gray-800">
+                        <span className="font-medium text-gray-800 dark:text-white">
                             {session.user.name}
                         </span>
 
@@ -84,7 +116,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                 ) : (
                     <button
                         onClick={() => signIn('google')}
-                        className="bg-sky-400 px-3 py-2 rounded"
+                        className="bg-sky-400 dark:bg-sky-600 px-3 py-2 rounded"
                     >
                         Sign In
                     </button>

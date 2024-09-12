@@ -6,15 +6,17 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        bgdark: "#0B050E",
+        bgdark: "#1e1f22",
         bgligth: "#ffff",
+        bgDarkOscuro: "#1e1f22",
         azulito: "#3d87f4",
         negroNav: "#1e1e1e",
         inputClaro: "#f3f0ff",
-        inputOscuro: "#404040"
+        inputOscuro: "#404040",
       },
     },
   },
