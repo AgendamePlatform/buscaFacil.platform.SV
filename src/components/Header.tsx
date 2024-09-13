@@ -43,7 +43,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
         <header className="w-full h-24 bg-bgprymariLigth dark:bg-bgdark flex justify-between items-center p-6">
             {/* Botón para cambiar el tamaño del sidebar */}
             <button
-                className="p-3 bg-azulito rounded-lg mr-[2%] hover:bg-blue-900  transition duration-300 shadow-lg"
+                className="p-3 bg-azulito rounded-lg mr-[2%] hover:bg-purple-900  transition duration-300 shadow-lg"
                 onClick={toggleSidebarSize}
             >
                 {isSidebarExpanded ? <FaArrowAltCircleLeft className=' text-white' size={24} /> : <FaArrowAltCircleRight className=' text-white' size={24} />} {/* Reemplaza las flechas con los iconos */}
@@ -53,7 +53,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
             <div className="flex items-center w-full justify-between">
                 {/* Combobox para "Filtrar por" */}
                 <div className="relative">
-                    <select className="bg-azulito dark:text-white text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-blue-900 transition duration-300 shadow-md">
+                    <select className="bg-azulito dark:text-white text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-purple-900 transition duration-300 shadow-md mr-3">
                         <option value="">Filtrar por</option>
                         <option value="opcion1">Opción 1</option>
                         <option value="opcion2">Opción 2</option>
@@ -74,7 +74,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                 {/* Iconos y autenticación */}
                 <div className="flex items-center space-x-4 ml-4">
                     <button className="relative hover:text-orange-500 transition duration-300">
-                        <FiBell size={35} className="text-azulito dark:text-white hover:text-blue-700" />
+                        <FiBell size={35} className="text-azulito dark:text-white hover:text-purple-700" />
                         <span className="absolute top-0 right-0 text-xs text-white bg-orange-400 rounded-full h-5 w-5 flex justify-center items-center">3</span>
                     </button>
 
@@ -83,7 +83,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                         onClick={toggleDarkMode}
                         className="hover:text-blue-500 dark:hover:text-yellow-400 transition duration-300"
                     >
-                        {darkMode ? <FiSun size={28} className='text-azulito dark:text-white hover:text-blue-700' /> : <FiMoon size={28} className='text-azulito hover:text-blue-700x   ' />}
+                        {darkMode ? <FiSun size={28} className='text-azulito dark:text-white hover:text-purple-700' /> : <FiMoon size={28} className='text-azulito hover:text-purple-700  ' />}
                     </button>
 
                     {session?.user ? (
@@ -93,7 +93,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                                 <img
                                     src={session.user.image}
                                     alt="User image"
-                                    className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600 shadow-md"
+                                    className="w-10 h-10 rounded-full border-2 border-azulito dark:border-gray-600 "
                                 />
                             )}
                             {/* Nombre del usuario */}
@@ -110,7 +110,7 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
                                 }}
                                 className="hover:text-blue-700 transition duration-300"
                             >
-                                <FiLogOut size={28} className='text-azulito dark:text-white hover:text-blue-700 ' />
+                                <FiLogOut size={28} className='text-azulito dark:text-white hover:text-purple-700 ' />
                             </button>
                         </div>
                     ) : (

@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-white">
+      <body className="bg-bgligth dark:bg-bgdark">
         {/* Aquí renderizamos el ClientLayout */}
         <Providers>
           <ClientLayout>

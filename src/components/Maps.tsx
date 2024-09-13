@@ -38,10 +38,10 @@ export default function LeafletMap() {
                     // Agregar el contorno de El Salvador al mapa
                     L.geoJSON(geoJsonData, {
                         style: {
-                            color: 'blue', // Color del borde
+                            color: '#1a0f3a', // Color del borde
                             weight: 2, // Grosor de la línea
                             opacity: 0.7, // Opacidad
-                            fillColor: 'blue',
+                            fillColor: '#1a0f3a',
                             fillOpacity: 0.05, // Relleno del contorno
                         },
                     }).addTo(map);

@@ -10,12 +10,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bgdark: "#1e1f22",
+        bgdark: "#2e2d2d",
         bgligth: "#ffff",
         bgDarkOscuro: "#1e1f22",
         bgprimaryLigth: "#fbfeff",
         border: "#e3f5f5",
-        azulito: "#101231",
+        azulito: "#1a0f3a",
         celeste: "#aad3df",
         negroNav: "#1e1e1e",
       },
