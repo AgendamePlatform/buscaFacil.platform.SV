@@ -14,7 +14,7 @@ const ErrorPage: React.FC = () => {
 
             {/* Texto y botón */}
             <div className="text-center">
-                <h1 className="text-6xl font-extrabold text-gray-800 mb-6 leading-tight">
+                <h1 className="text-6xl font-extrabold text-azulito mb-6 leading-tight">
                     Oops! <br /> Something went wrong.
                 </h1>
                 <p className="text-lg text-gray-600 mb-8">
@@ -23,7 +23,7 @@ const ErrorPage: React.FC = () => {
                 {/* Botón de recarga */}
                 <button
                     onClick={() => window.location.reload()}
-                    className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg rounded-full shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform duration-300 ease-in-out transform hover:scale-105"
+                    className="px-8 py-3 bg-azulito mr-[2%] text-white hover:bg-purple-900 font-semibold text-lg rounded-full shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform duration-300 ease-in-out transform hover:scale-105"
                 >
                     Refrescar
                 </button>

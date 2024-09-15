@@ -61,13 +61,13 @@ const Table: React.FC<TableProps> = ({ headers, data, rowsPerPage }) => {
 
             {/* Contenedor para hacer scroll en la tabla */}
             <div className="flex-1 overflow-auto transition-all">
-                <table className="min-w-full bg-white table-fixed transition-all">
-                    <thead>
-                        <tr className="bg-morado text-white">
+                <table className="min-w-full bg-white table-fixed transition-all rounded-3xl">
+                    <thead className='bg-azulito'>
+                        <tr className="bg-azulito text-white">
                             {headers.map((header) => (
                                 <th
                                     key={header}
-                                    className="p-3 text-left cursor-pointer text-black"
+                                    className="p-3 text-left cursor-pointer text-white"
                                     onClick={() => handleSort(header)}
                                     style={{ minWidth: '150px' }}  // Ancho mínimo
                                 >

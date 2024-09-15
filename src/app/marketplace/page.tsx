@@ -1,16 +1,96 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from 'react';
 import { getRoles } from '@/utils/Roles';
 import { Role } from '@/interfaces/Independientes';
 import Loader from '@/components/Loader';
 import ErrorPage from '@/components/ErrorPage';
 import Maps from '@/components/Maps';
+import TaskMarketPlace from '@/components/TaskMarketPlace';
+import Link from 'next/link';
+
+// Datos de ejemplo para productos
+const products = [
+    {
+        id: 1,
+        title: "MacBook Pro 2021",
+        department: "San Salvador",
+        publicationDate: "14 de Septiembre, 2024",
+        details: "MacBook Pro con chip M1, 16GB RAM, 512GB SSD, en excelentes condiciones.",
+        isNew: false,
+        images: ["/path/to/macbook.jpg"],
+        category: "Electrónica",
+        transport: "Entrega personal",
+        userName: "Juan Perez",
+        userImage: "/path/to/user1.jpg"
+    },
+    {
+        id: 2,
+        title: "iPhone 13 Pro",
+        department: "La Libertad",
+        publicationDate: "20 de Septiembre, 2024",
+        details: "iPhone 13 Pro, 256GB, color grafito. Usado, pero en excelente estado.",
+        isNew: false,
+        images: ["/path/to/iphone.jpg"],
+        category: "Telefonía",
+        transport: "Envío por mensajería",
+        userName: "Maria Lopez",
+        userImage: "/path/to/user2.jpg"
+    },
+    {
+        id: 3,
+        title: "Samsung Galaxy S22",
+        department: "San Miguel",
+        publicationDate: "10 de Octubre, 2024",
+        details: "Samsung Galaxy S22, 128GB, con pantalla AMOLED, nuevo en caja.",
+        isNew: true,
+        images: ["/path/to/samsung.jpg"],
+        category: "Telefonía",
+        transport: "Entrega personal",
+        userName: "Carlos Gomez",
+        userImage: "/path/to/user3.jpg"
+    },
+    {
+        id: 4,
+        title: "Bicicleta de Montaña",
+        department: "Santa Ana",
+        publicationDate: "25 de Agosto, 2024",
+        details: "Bicicleta de montaña, marco de aluminio, frenos de disco, 21 velocidades.",
+        isNew: true,
+        images: ["/path/to/bike.jpg"],
+        category: "Deportes",
+        transport: "Recoger en tienda",
+        userName: "Pedro Martinez",
+        userImage: "/path/to/user4.jpg"
+    },
+    {
+        id: 5,
+        title: "Televisor LG 55\" 4K",
+        department: "San Vicente",
+        publicationDate: "5 de Julio, 2024",
+        details: "Televisor LG de 55 pulgadas con resolución 4K y sistema operativo webOS.",
+        isNew: false,
+        images: ["/path/to/tv.jpg"],
+        category: "Electrónica",
+        transport: "Entrega a domicilio",
+        userName: "Ana Hernandez",
+        userImage: "/path/to/user5.jpg"
+    },
+    {
+        id: 6,
+        title: "Cámara Canon EOS R5",
+        department: "Ahuachapán",
+        publicationDate: "12 de Noviembre, 2024",
+        details: "Cámara Canon EOS R5, 45MP, video 8K, incluye lente 24-105mm.",
+        isNew: true,
+        images: ["/path/to/camera.jpg"],
+        category: "Fotografía",
+        transport: "Entrega personal",
+        userName: "Sofia Reyes",
+        userImage: "/path/to/user6.jpg"
+    }
+];
 
 export default function Page() {
-    // Estados para roles, carga, error y si estamos en el cliente
-    const [roles, setRoles] = useState<Role[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [isClient, setIsClient] = useState(false); // Para verificar si estamos en el cliente
 
     useEffect(() => {
@@ -18,61 +98,30 @@ export default function Page() {
         setIsClient(true);
     }, []);
 
-    useEffect(() => {
-        const fetchRoles = async () => {
-            if (!isClient) return; // Solo ejecutamos si estamos en el cliente
-
-            try {
-                const rolesData = await getRoles(); // Llamamos a la función de utils
-                setRoles(rolesData);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error en la solicitud:', error);
-                setError('Error al obtener los roles');
-                setLoading(false);
-            }
-        };
-
-        fetchRoles();
-    }, [isClient]); // Dependemos de isClient para asegurarnos de que la llamada solo ocurra en el cliente
-
-    // if (!isClient) return null; // Evitamos renderizar hasta estar seguros de que estamos en el cliente
-    // if (loading) return <Loader />;
-    // if (error) return <ErrorPage />;
+    if (!isClient) return null; // Evitamos renderizar hasta estar seguros de que estamos en el cliente
 
     return (
-        <div className="container mx-auto px-4 py-8 bg-bgprimaryLigth dark:bg-primaryDark">
-            <h1 className="text-3xl font-bold mb-6">Roles registrados</h1>
-            {/* <div className="bg-white shadow-md rounded-lg p-6">
-                {roles.length > 0 ? (
-                    <ul className="space-y-4">
-                        {roles.map((role) => (
-                            <li
-                                key={role.id}
-                                className="bg-gray-100 p-4 rounded-lg flex items-center justify-between shadow-sm"
-                            >
-                                <div>
-                                    <p className="text-xl font-semibold">{role.name}</p>
-                                    <p className="text-sm text-gray-600">
-                                        {role.isActive ? 'Activo' : 'Inactivo'}
-                                    </p>
-                                </div>
-                                <span
-                                    className={`inline-block px-3 py-1 text-sm font-semibold ${role.isActive
-                                        ? 'text-green-700 bg-green-100'
-                                        : 'text-red-700 bg-red-100'
-                                        } rounded-full`}
-                                >
-                                    {role.isActive ? 'Activo' : 'Inactivo'}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p className="text-gray-500">No se encontraron roles.</p>
-                )}
-            </div> */}
-            <Maps />
+        <div className="container mx-auto px-4 py-8 bg-bgprimaryLigth dark:bg-bgDarkOscuro">
+            <h1 className="text-3xl font-bold mb-6">Resultados</h1>
+            {products.map((product) => (
+                <Link href={`/marketplace/${product.id}`} key={product.id}>
+                    <div>
+                        <TaskMarketPlace
+                            title={product.title}
+                            department={product.department}
+                            publicationDate={product.publicationDate}
+                            details={product.details}
+                            isNew={product.isNew}
+                            images={product.images}
+                            category={product.category}
+                            transport={product.transport}
+                            userName={product.userName}
+                            userImage={product.userImage}
+                        />
+                    </div>
+                </Link>
+
+            ))}
         </div>
     );
 }
