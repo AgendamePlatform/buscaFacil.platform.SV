@@ -85,7 +85,7 @@ export default function ClientLayout({
             {/* Main content */}
             <div className="flex-1 flex flex-col  h-full overflow-hidden bg-bgprimaryLigth dark:bg-bgDarkOscuro">
                 <Header isSidebarExpanded={isSidebarExpanded} toggleSidebarSize={toggleSidebarSize} />
-                <main className="flex-1 rounded-[2%] overflow-auto shadow-lg">
+                <main className="flex-1 rounded-[2%] overflow-auto shadow-lg h-[50%]">
                     <section className="">{children}</section>
                 </main>
             </div>

@@ -14,6 +14,8 @@ interface PublicationCardProps {
     transport: string;
     userName: string;
     userImage: string;
+    price: number;
+    discountPrice?: number; // Opcional para mostrar un precio con descuento
 }
 
 const TaskMarketPlace: React.FC<PublicationCardProps> = ({
@@ -27,9 +29,11 @@ const TaskMarketPlace: React.FC<PublicationCardProps> = ({
     transport,
     userName,
     userImage,
+    price,
+    discountPrice,
 }) => {
     return (
-        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg border border-gray-100 shadow-sm p-6 flex space-x-6 mb-6 transition-all duration-300 cursor-pointer hover:shadow-xl hover:scale-[1.01] relative">
+        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg border border-gray-100 shadow-sm p-6 flex space-x-6 mb-6 transition-all duration-300 cursor-pointer hover:shadow-lg hover:scale-[1.01] relative">
             {/* Información del usuario en la esquina superior derecha */}
             <div className="absolute top-4 right-4 flex items-center space-x-2">
                 <img src={userImage} alt={userName} className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600 shadow-md" />
@@ -53,6 +57,18 @@ const TaskMarketPlace: React.FC<PublicationCardProps> = ({
                     <p className="text-sm text-gray-500 dark:text-gray-300">{department} - {publicationDate}</p>
                     <p className="mt-4 text-gray-700 dark:text-gray-300 line-clamp-3">{details}</p>
 
+                    {/* Mostrar el precio */}
+                    <div className="mt-4">
+                        {discountPrice ? (
+                            <div className="flex items-center space-x-2">
+                                <span className="text-2xl font-bold text-red-600">${discountPrice}</span>
+                                <span className="text-sm text-gray-500 line-through">${price}</span>
+                            </div>
+                        ) : (
+                            <span className="text-2xl font-bold text-gray-800 dark:text-white">${price}</span>
+                        )}
+                    </div>
+
                     {/* Información adicional */}
                     <div className="flex items-center mt-4 space-x-4">
                         {/* Icono para nuevo o segunda mano */}
@@ -63,13 +79,13 @@ const TaskMarketPlace: React.FC<PublicationCardProps> = ({
 
                         {/* Iconos adicionales */}
                         <div className="flex items-center space-x-2">
-                            <GiAutoRepair size={25} className="text-gray-600 dark:text-gray-400" />
+                            <GiAutoRepair size={25} className="text-azulito dark:text-gray-400" />
                             <p className="text-sm text-gray-600 dark:text-gray-400">Categoría: <span className="font-medium">{category}</span></p>
                         </div>
 
                         <div className="flex items-center space-x-2">
                             <MdOutlineLocalShipping size={25} className="text-gray-600 dark:text-gray-400" />
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Transporte: <span className="font-medium">{transport}</span></p>
+                            <p className="text-sm text-azulito dark:text-gray-400">Transporte: <span className="font-medium">{transport}</span></p>
                         </div>
                     </div>
                 </div>
