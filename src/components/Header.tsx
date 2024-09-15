@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FiSearch, FiBell, FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
+import { FiSearch, FiBell, FiLogOut, FiSun, FiMoon, FiMenu } from 'react-icons/fi';
 import { signIn, useSession, signOut } from 'next-auth/react';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 interface HeaderProps {
     isSidebarExpanded: boolean;
     toggleSidebarSize: () => void;
+    toggleSidebarVisibility: () => void; // Nuevo prop para controlar la visibilidad del sidebar en móvil
 }
 
-export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderProps) {
+export default function Header({ isSidebarExpanded, toggleSidebarSize, toggleSidebarVisibility }: HeaderProps) {
     const { data: session } = useSession();
     const [darkMode, setDarkMode] = useState(false);
 
@@ -41,25 +42,24 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize }: HeaderP
 
     return (
         <header className="w-full h-24 bg-bgprymariLigth dark:bg-bgdark flex justify-between items-center p-6">
-            {/* Botón para cambiar el tamaño del sidebar */}
+            {/* Botón para abrir/cerrar el sidebar en modo móvil */}
             <button
-                className="p-3 bg-azulito rounded-lg mr-[2%] hover:bg-purple-900  transition duration-300 shadow-lg"
+                className="p-3 bg-azulito rounded-lg mr-4 sm:hidden hover:bg-purple-900 transition duration-300 shadow-lg"
+                onClick={toggleSidebarVisibility}
+            >
+                <FiMenu className='text-white' size={24} />
+            </button>
+
+            {/* Botón para cambiar el tamaño del sidebar en pantallas grandes */}
+            <button
+                className="p-3 bg-azulito rounded-lg mr-[2%] hidden sm:block hover:bg-purple-900 transition duration-300 shadow-lg"
                 onClick={toggleSidebarSize}
             >
-                {isSidebarExpanded ? <FaArrowAltCircleLeft className=' text-white' size={24} /> : <FaArrowAltCircleRight className=' text-white' size={24} />} {/* Reemplaza las flechas con los iconos */}
+                {isSidebarExpanded ? <FaArrowAltCircleLeft className='text-white' size={24} /> : <FaArrowAltCircleRight className='text-white' size={24} />}
             </button>
 
             {/* Filtro y barra de búsqueda */}
             <div className="flex items-center w-full justify-between">
-                {/* Combobox para "Filtrar por" */}
-                <div className="relative">
-                    <select className="bg-azulito dark:text-white text-white p-3 rounded-lg appearance-none cursor-pointer hover:bg-purple-900 transition duration-300 shadow-md mr-3">
-                        <option value="">Filtrar por</option>
-                        <option value="opcion1">Opción 1</option>
-                        <option value="opcion2">Opción 2</option>
-                        <option value="opcion3">Opción 3</option>
-                    </select>
-                </div>
 
                 {/* Input con icono de lupa */}
                 <div className="relative flex items-center w-[65%]">

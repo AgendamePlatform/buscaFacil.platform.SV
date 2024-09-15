@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import TaskMarketPlace from '@/components/TaskMarketPlace';
 
-// Datos de ejemplo para productos
-// Datos de ejemplo para productos
 const products = [
     {
         id: 1,
@@ -104,6 +102,8 @@ interface FilterSectionProps {
     setSelectedDepartment: (value: string) => void;
     selectedState: string;
     setSelectedState: (value: string) => void;
+    showFilters: boolean;
+    setShowFilters: (value: boolean) => void;
 }
 
 // Componente para la sección de filtros y anuncios
@@ -112,9 +112,11 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     setSelectedDepartment,
     selectedState,
     setSelectedState,
+    showFilters,
+    setShowFilters,
 }) => {
     return (
-        <div className="w-full bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6 sticky top-4 h-[50%]">
+        <div className={`w-full bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6 md:sticky top-4 h-[50%] ${showFilters ? 'block' : 'hidden'} md:block`}>
             <h2 className="text-xl font-bold mb-4">Filtros</h2>
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Departamento</label>
@@ -149,8 +151,16 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                     Espacio para Google Ads
                 </div>
             </div>
+            {/* Botón para cerrar filtros en modo móvil */}
+            <div className="md:hidden mt-4">
+                <button
+                    onClick={() => setShowFilters(false)}
+                    className="w-full px-4 py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                    Cerrar Filtros
+                </button>
+            </div>
         </div>
-
     );
 };
 
@@ -158,6 +168,7 @@ export default function Page() {
     const [isClient, setIsClient] = useState(false);
     const [selectedDepartment, setSelectedDepartment] = useState<string>('');
     const [selectedState, setSelectedState] = useState<string>('');
+    const [showFilters, setShowFilters] = useState<boolean>(false); // Estado para mostrar/ocultar filtros en móviles
 
     useEffect(() => {
         setIsClient(true);
@@ -175,19 +186,40 @@ export default function Page() {
 
     return (
         <div className="container mx-auto px-4 py-8 bg-bgprimaryLigth dark:bg-bgDarkOscuro">
-            <h1 className="text-3xl font-bold mb-6">Resultados</h1>
+            <div className="mb-6 flex justify-between items-center">
+                <h1 className="text-3xl font-bold">Resultados</h1>
+                <Link href="/marketplace/create">
+                    <button className="px-4 py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        Vender Producto
+                    </button>
+                </Link>
+            </div>
+
+            {/* Botón para mostrar filtros en móviles */}
+            <div className="md:hidden mb-4">
+                <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                    {showFilters ? 'Ocultar Filtros' : 'Ver Filtros'}
+                </button>
+            </div>
+
             <div className="flex">
                 {/* Columna izquierda: Filtros y anuncios */}
-                <div className="w-1/4 pr-4 overflow-y-hidden">
+                <div className={`w-full md:w-1/4 pr-4 overflow-y-hidden ${showFilters ? 'block' : 'hidden'} md:block`}>
                     <FilterSection
                         selectedDepartment={selectedDepartment}
                         setSelectedDepartment={setSelectedDepartment}
                         selectedState={selectedState}
                         setSelectedState={setSelectedState}
+                        showFilters={showFilters}
+                        setShowFilters={setShowFilters}
                     />
                 </div>
+
                 {/* Columna derecha: Tarjetas de productos */}
-                <div className="w-3/4 overflow-y-auto h-[calc(100vh-4rem)]">
+                <div className="w-full md:w-3/4 overflow-y-auto h-[calc(100vh-4rem)]">
                     {filteredProducts.map((product) => (
                         <Link href={`/marketplace/${product.id}`} key={product.id}>
                             <div>
