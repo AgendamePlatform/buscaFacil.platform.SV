@@ -1,4 +1,3 @@
-// components/Table.tsx
 import React, { useState, useEffect } from 'react';
 
 interface TableProps {
@@ -48,7 +47,7 @@ const Table: React.FC<TableProps> = ({ headers, data, rowsPerPage }) => {
     const paginatedData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
     return (
-        <div className="w-full overflow-x-auto">
+        <div className="w-full flex flex-col h-full">
             {/* Input para buscar */}
             <div className="flex justify-between items-center mb-4">
                 <input
@@ -56,55 +55,58 @@ const Table: React.FC<TableProps> = ({ headers, data, rowsPerPage }) => {
                     placeholder="Buscar..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="border p-2 rounded-lg text-gray-800 dark:text-white bg-white dark:bg-gray-700"
+                    className="bg-bgligth dark:bg-gray-700 dark:text-white border text-gray-600 dark:border-gray-600 rounded-lg p-4  pl-12 focus:outline-none  focus:ring-2 focus:ring-gray-300  focus:border-azulito h-12 transition duration-300"
                 />
             </div>
 
-            {/* Tabla */}
-            <table className="min-w-full bg-white ">
-                <thead>
-                    <tr className="bg-morado text-white">
-                        {headers.map((header) => (
-                            <th
-                                key={header}
-                                className="p-3 text-left cursor-pointer text-black"
-                                onClick={() => handleSort(header)}
-                            >
-                                {header}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {paginatedData.length === 0 ? (
-                        <tr>
-                            <td className="text-center p-3" colSpan={headers.length}>
-                                No hay resultados.
-                            </td>
+            {/* Contenedor para hacer scroll en la tabla */}
+            <div className="flex-1 overflow-auto transition-all">
+                <table className="min-w-full bg-white table-fixed transition-all rounded-3xl">
+                    <thead className='bg-azulito'>
+                        <tr className="bg-azulito text-white">
+                            {headers.map((header) => (
+                                <th
+                                    key={header}
+                                    className="p-3 text-left cursor-pointer text-white"
+                                    onClick={() => handleSort(header)}
+                                    style={{ minWidth: '150px' }}  // Ancho mínimo
+                                >
+                                    {header}
+                                </th>
+                            ))}
                         </tr>
-                    ) : (
-                        paginatedData.map((row, index) => (
-                            <tr
-                                key={index}
-                                className="border-b hover:bg-purple-200 cursor-pointer"
-                            >
-                                {headers.map((header) => (
-                                    <td key={header} className="p-3">
-                                        {row[header]}
-                                    </td>
-                                ))}
+                    </thead>
+                    <tbody>
+                        {paginatedData.length === 0 ? (
+                            <tr>
+                                <td className="text-center p-3" colSpan={headers.length}>
+                                    No hay resultados.
+                                </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            paginatedData.map((row, index) => (
+                                <tr
+                                    key={index}
+                                    className="border-b hover:bg-purple-200 cursor-pointer transition-all"
+                                >
+                                    {headers.map((header) => (
+                                        <td key={header} className="p-3" style={{ minWidth: '150px' }}>
+                                            {row[header]}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
-            {/* Paginación */}
-            <div className="flex justify-between items-center py-4">
+            {/* Botones de paginación fijos */}
+            <div className="flex justify-center items-center py-4 sticky bottom-0 bg-white dark:bg-gray-800 gap-4">
                 <button
                     onClick={() => handlePagination(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="p-2 bg-morado text-white rounded-lg disabled:opacity-50"
+                    className="p-2 bg-morado text-white rounded-lg disabled:opacity-50 bg-azulito transition hover:bg-blue-600"
                 >
                     Anterior
                 </button>
@@ -114,7 +116,7 @@ const Table: React.FC<TableProps> = ({ headers, data, rowsPerPage }) => {
                 <button
                     onClick={() => handlePagination(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="p-2 bg-morado text-white rounded-lg disabled:opacity-50"
+                    className="p-2 bg-morado text-white rounded-lg disabled:opacity-50 bg-azulito transition hover:bg-blue-600"
                 >
                     Siguiente
                 </button>
