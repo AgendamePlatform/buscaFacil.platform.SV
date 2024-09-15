@@ -29,7 +29,7 @@ const headers = ['Cita', 'Tiempo', 'Precio'];
 
 export default function Page() {
   return (
-    <div className="w-full h-[85vh] flex justify-center items-center bg-bgprimaryLigth dark:bg-bgDarkOscuro">
+    <div className="w-full h-[85vh] flex justify-center items-center bg-bgprimaryLigth dark:bg-bgDarkOscuro select-none">
       {/* Contenedor dividido en dos secciones, cada una ocupa el 50% del alto */}
       <div className="w-full h-full flex flex-col gap-4">
 

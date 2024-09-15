@@ -1,4 +1,6 @@
 'use client';
+import ProductForm from '@/components/forms/ProductForm';
+import MarkdownForm from '@/components/MarkdownForm';
 import React from 'react';
 
 // Datos de ejemplo
@@ -85,7 +87,7 @@ const products = [
 ];
 
 const ProductDetails = ({ params }: { params: { id: string } }) => {
-    // Obtén el id de la URL desde los parámetros
+    // obtine  el id de la URL desde los parámetros
     const { id } = params;
 
     // Encuentra el producto usando el id
@@ -99,7 +101,6 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
         <div className="container mx-auto px-4 py-8 bg-bgprimaryLigth dark:bg-primaryDark">
             <h1 className="text-3xl font-bold mb-6">{product.title}</h1>
             <p>{product.details}</p>
-            {/* Agrega más detalles y estilos */}
         </div>
     );
 };
