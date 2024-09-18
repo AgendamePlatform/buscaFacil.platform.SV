@@ -12,4 +12,6 @@ export interface User {
     role: Role;
     genero: Genero;
     proveedorAutenticacion: ProveedorAutenticacion;
+    name?: string; // Agregar esta propiedad
+    image?: string; // Agregar esta propiedad
 }

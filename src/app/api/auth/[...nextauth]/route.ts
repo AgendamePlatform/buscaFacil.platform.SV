@@ -24,7 +24,7 @@ const handler = NextAuth({
         async session({ session, token }) {
             try {
                 // Enviamos el token de Google al backend para validarlo y obtener un JWT personalizado
-                const response = await fetch('http://localhost:3000/auth/google-login', {
+                const response = await fetch('http://localhost:3000/auth/googlelogin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

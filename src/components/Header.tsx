@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { FiSearch, FiBell, FiLogOut, FiSun, FiMoon, FiMenu } from 'react-icons/fi';
 import { signIn, useSession, signOut } from 'next-auth/react';
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import { User } from '@/interfaces/Dependientes';
 
 interface HeaderProps {
     isSidebarExpanded: boolean;
@@ -14,6 +15,7 @@ interface HeaderProps {
 export default function Header({ isSidebarExpanded, toggleSidebarSize, toggleSidebarVisibility }: HeaderProps) {
     const { data: session } = useSession();
     const [darkMode, setDarkMode] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
 
     // Manejar el cambio del tema claro/oscuro
     const toggleDarkMode = () => {
@@ -38,7 +40,16 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize, toggleSid
             setDarkMode(false);
             document.documentElement.classList.remove('dark');
         }
-    }, []);
+
+        // Cargar la información del usuario desde el session
+        if (session?.user) {
+            setUser({
+                ...session.user,
+                name: session.user.name || '', // Asegurarse de que name sea opcional
+                image: session.user.image || '' // Asegurarse de que image sea opcional
+            } as User);
+        }
+    }, [session]);
 
     return (
         <header className="w-full h-24 bg-bgprymariLigth dark:bg-bgdark flex justify-between items-center p-6">
@@ -60,8 +71,6 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize, toggleSid
 
             {/* Filtro y barra de búsqueda */}
             <div className="flex items-center w-full justify-between">
-
-                {/* Input con icono de lupa */}
                 <div className="relative flex items-center w-[65%]">
                     <input
                         type="text"
@@ -86,19 +95,19 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize, toggleSid
                         {darkMode ? <FiSun size={28} className='text-azulito dark:text-white hover:text-purple-700' /> : <FiMoon size={28} className='text-azulito hover:text-purple-700  ' />}
                     </button>
 
-                    {session?.user ? (
+                    {user ? (
                         <div className="flex items-center space-x-4">
                             {/* Imagen del usuario */}
-                            {session.user.image && (
+                            {user.image && (
                                 <img
-                                    src={session.user.image}
+                                    src={user.image}
                                     alt="User image"
                                     className="w-10 h-10 rounded-full border-2 border-azulito dark:border-gray-600 "
                                 />
                             )}
                             {/* Nombre del usuario */}
                             <span className="font-medium text-gray-800 dark:text-white">
-                                {session.user.name}
+                                {user.name}
                             </span>
 
                             {/* Botón de Logout con icono */}
