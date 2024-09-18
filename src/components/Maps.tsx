@@ -7,8 +7,10 @@ import { feature } from 'topojson-client'; // Importar la función de conversió
 
 export default function LeafletMap() {
     const mapRef = useRef<HTMLDivElement>(null);
+    const mapInstance = useRef<L.Map | null>(null); // Referencia para almacenar la instancia del mapa
     const [isClient, setIsClient] = useState(false);
     const departmentLayers = useRef<{ [key: string]: L.LayerGroup }>({}); // Referencia para manejar grupos de capas de cada departamento
+    const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null); // Estado para almacenar el departamento seleccionado
 
     // Lista de colores predefinidos
     const colors = [
@@ -30,94 +32,104 @@ export default function LeafletMap() {
             const lat = 13.698744628074294;
             const lng = -89.79988832735656;
 
-            // Inicializar el mapa
-            const map = L.map(mapRef.current).setView([lat, lng], 10);
+            // Verificar si el mapa ya ha sido inicializado
+            if (!mapInstance.current) {
+                // Inicializar el mapa solo si no ha sido creado previamente
+                mapInstance.current = L.map(mapRef.current).setView([lat, lng], 10);
 
-            // Cargar la capa de mosaicos de OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            }).addTo(map);
+                // Cargar la capa de mosaicos de OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                }).addTo(mapInstance.current);
 
-            // Cargar el archivo TopoJSON y convertirlo a GeoJSON
-            fetch('/data/topo.json') // Cambia la ruta según la ubicación de tu archivo TopoJSON
-                .then(response => response.json())
-                .then(topoJsonData => {
-                    // Convertir TopoJSON a GeoJSON
-                    const geoJsonData = feature(topoJsonData, topoJsonData.objects.collection);
+                // Cargar el archivo TopoJSON y convertirlo a GeoJSON
+                fetch('/data/topo.json') // Cambia la ruta según la ubicación de tu archivo TopoJSON
+                    .then(response => response.json())
+                    .then(topoJsonData => {
+                        // Convertir TopoJSON a GeoJSON
+                        const geoJsonData = feature(topoJsonData, topoJsonData.objects.collection);
 
-                    // Recorrer las características GeoJSON y agrupar por departamento
-                    L.geoJSON(geoJsonData, {
-                        style: (feature) => {
-                            const department = feature?.properties?.D;
+                        // Recorrer las características GeoJSON y agrupar por departamento
+                        L.geoJSON(geoJsonData, {
+                            style: (feature) => {
+                                const department = feature?.properties?.D;
 
-                            // Asignar un color único a cada departamento
-                            if (!departmentColors[department]) {
-                                departmentColors[department] = colors[colorIndex % colors.length];
-                                colorIndex++;
-                            }
-
-                            return {
-                                color: '#1a0f3a', // Color del contorno 
-                                weight: 0.8,
-                                fillColor: "#ffcbf8", // Aplicar color al seleccionar
-                                fillOpacity: 0.1, // Opacidad al seleccionar
-                            };
-                        },
-                        onEachFeature: (feature, layer) => {
-                            const department = feature?.properties?.D;
-
-                            // Agrupar las capas de cada departamento
-                            if (department) {
-                                if (!departmentLayers.current[department]) {
-                                    departmentLayers.current[department] = L.layerGroup().addTo(map);
+                                // Asignar un color único a cada departamento
+                                if (!departmentColors[department]) {
+                                    departmentColors[department] = colors[colorIndex % colors.length];
+                                    colorIndex++;
                                 }
-                                departmentLayers.current[department].addLayer(layer);
-                            }
 
-                            // Añadir evento de clic para resaltar el departamento
-                            layer.on('click', () => {
-                                // Restablecer los estilos de todas las capas antes de resaltar el nuevo departamento
-                                resetAllLayersStyle();
+                                return {
+                                    color: '#202124', // Color del contorno negro
+                                    weight: 0.8,
+                                    fillColor: departmentColors[department], // Asignar el color al departamento
+                                    fillOpacity: 0.5, // Opacidad inicial
+                                };
+                            },
+                            onEachFeature: (feature, layer) => {
+                                const department = feature?.properties?.D;
 
-                                // Resaltar todas las capas del departamento seleccionado
-                                if (department && departmentLayers.current[department]) {
-                                    departmentLayers.current[department].eachLayer((deptLayer) => {
-                                        const highlightColor = departmentColors[department];
-                                        (deptLayer as L.Path).setStyle({
-                                            weight: 2,
-                                            color: highlightColor, // Contorno del mismo color que el relleno
-                                            fillColor: highlightColor, // Aplicar color al seleccionar
-                                            fillOpacity: 0.1, // Opacidad al seleccionar
-                                        });
-                                    });
-                                    // Mostrar el popup del departamento seleccionado
-                                    const center = layer.getBounds().getCenter();
-                                    L.popup()
-                                        .setLatLng(center)
-                                        .setContent(`<strong>Departamento seleccionado:</strong> <br>${department}`)
-                                        .openOn(map);
+                                // Agrupar las capas de cada departamento
+                                if (department) {
+                                    if (!departmentLayers.current[department]) {
+                                        departmentLayers.current[department] = L.layerGroup().addTo(mapInstance.current);
+                                    }
+                                    departmentLayers.current[department].addLayer(layer);
                                 }
-                            });
-                        },
-                    });
-                });
 
-            // Función para restablecer los estilos de todas las capas
-            const resetAllLayersStyle = () => {
-                Object.keys(departmentLayers.current).forEach((department) => {
-                    departmentLayers.current[department].eachLayer((layer) => {
-                        (layer as L.Path).setStyle({
-                            color: '#202124', // Color del contorno negro
-                            weight: 0.8,
-                            opacity: 0.9,
-                            fillColor: 'transparent', // Sin relleno
-                            fillOpacity: 0, // Sin opacidad de relleno
+                                // Añadir evento de clic para resaltar el departamento
+                                layer.on('click', () => {
+                                    if (selectedDepartment === department) {
+                                        // Deseleccionar si el mismo departamento ya está seleccionado
+                                        setSelectedDepartment(null);
+                                        resetAllLayersStyle();
+                                    } else {
+                                        // Restablecer los estilos de todas las capas antes de resaltar el nuevo departamento
+                                        resetAllLayersStyle(department);
+
+                                        // Resaltar todas las capas del departamento seleccionado
+                                        if (department && departmentLayers.current[department]) {
+                                            departmentLayers.current[department].eachLayer((deptLayer) => {
+                                                const highlightColor = departmentColors[department];
+                                                (deptLayer as L.Path).setStyle({
+                                                    weight: 2,
+                                                    color: highlightColor, // Contorno del mismo color que el relleno
+                                                    fillColor: highlightColor, // Aplicar color al seleccionar
+                                                    fillOpacity: 0.5, // Opacidad al seleccionar
+                                                });
+                                            });
+                                            setSelectedDepartment(department);
+                                            // Mostrar el popup del departamento seleccionado
+                                            const center = layer.getBounds().getCenter();
+                                            L.popup()
+                                                .setLatLng(center)
+                                                .setContent(`<strong>Departamento seleccionado:</strong> <br>${department}`)
+                                                .openOn(mapInstance.current);
+                                        }
+                                    }
+                                });
+                            },
                         });
                     });
-                });
-            };
+            }
         }
-    }, [isClient]);
+    }, [isClient, selectedDepartment]);
+
+    // Función para restablecer los estilos de todas las capas
+    const resetAllLayersStyle = (selectedDept = null) => {
+        Object.keys(departmentLayers.current).forEach((department) => {
+            departmentLayers.current[department].eachLayer((layer) => {
+                const color = departmentColors[department];
+                (layer as L.Path).setStyle({
+                    color: '#202124', // Color del contorno negro
+                    weight: 0.8,
+                    fillColor: department === selectedDept ? color : 'transparent', // Solo aplicar color al seleccionado
+                    fillOpacity: department === selectedDept ? 0.5 : 0, // Opacidad solo para el seleccionado
+                });
+            });
+        });
+    };
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center w-full h-screen">
