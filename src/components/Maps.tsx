@@ -2,21 +2,33 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
-import 'leaflet/dist/leaflet.css'; // Importa el CSS de Leaflet
+import 'leaflet/dist/leaflet.css';
+import { feature } from 'topojson-client'; // Importar la función de conversión de topojson-client
 
 export default function LeafletMap() {
     const mapRef = useRef<HTMLDivElement>(null);
-    const [isClient, setIsClient] = useState(false); // Estado para saber si estamos en el cliente
-    const [selectedPosition, setSelectedPosition] = useState<{ lat: number, lng: number } | null>(null);
+    const [isClient, setIsClient] = useState(false);
+    const departmentLayers = useRef<{ [key: string]: L.LayerGroup }>({}); // Referencia para manejar grupos de capas de cada departamento
+
+    // Lista de colores predefinidos
+    const colors = [
+        '#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#33FFF1', '#8D33FF',
+        '#FF8C33', '#33FF8C', '#8C33FF', '#FF3333', '#33FF33', '#3333FF',
+        '#FF33FF', '#33FFFF', '#FFFF33', '#FF6633', '#66FF33', '#3366FF'
+    ];
+
+    // Mapa para asignar colores únicos a cada departamento
+    const departmentColors: { [key: string]: string } = {};
+    let colorIndex = 0;
 
     useEffect(() => {
         setIsClient(true); // Asegura que solo se ejecute en el cliente
     }, []);
 
     useEffect(() => {
-        if (isClient && mapRef.current) { // Solo ejecuta si estamos en el cliente y el mapa está disponible
-            const lat = 13.698744628074294; // Coordenada de latitud
-            const lng = -89.79988832735656; // Coordenada de longitud
+        if (isClient && mapRef.current) {
+            const lat = 13.698744628074294;
+            const lng = -89.79988832735656;
 
             // Inicializar el mapa
             const map = L.map(mapRef.current).setView([lat, lng], 10);
@@ -26,64 +38,89 @@ export default function LeafletMap() {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(map);
 
-            // Agregar un marcador en la ubicación especificada con una ventana emergente personalizada
-            L.marker([lat, lng]).addTo(map)
-                .bindPopup('<b>Mi ubicación</b><br>13.698744628074294, -89.79988832735656', { closeButton: false })
-                .openPopup();
+            // Cargar el archivo TopoJSON y convertirlo a GeoJSON
+            fetch('/data/topo.json') // Cambia la ruta según la ubicación de tu archivo TopoJSON
+                .then(response => response.json())
+                .then(topoJsonData => {
+                    // Convertir TopoJSON a GeoJSON
+                    const geoJsonData = feature(topoJsonData, topoJsonData.objects.collection);
 
-            // Cargar el contorno de El Salvador desde el archivo GeoJSON usando `fetch`
-            fetch('/data/geoBoundaries-SLV-ADM0_simplified.geojson')
-                .then((response) => response.json())
-                .then((geoJsonData) => {
-                    // Agregar el contorno de El Salvador al mapa
+                    // Recorrer las características GeoJSON y agrupar por departamento
                     L.geoJSON(geoJsonData, {
-                        style: {
-                            color: '#1a0f3a', // Color del borde
-                            weight: 2, // Grosor de la línea
-                            opacity: 0.7, // Opacidad
-                            fillColor: '#1a0f3a',
-                            fillOpacity: 0.05, // Relleno del contorno
+                        style: (feature) => {
+                            const department = feature?.properties?.D;
+
+                            // Asignar un color único a cada departamento
+                            if (!departmentColors[department]) {
+                                departmentColors[department] = colors[colorIndex % colors.length];
+                                colorIndex++;
+                            }
+
+                            return {
+                                color: '#1a0f3a', // Color del contorno 
+                                weight: 0.8,
+                                fillColor: "#ffcbf8", // Aplicar color al seleccionar
+                                fillOpacity: 0.1, // Opacidad al seleccionar
+                            };
                         },
-                    }).addTo(map);
+                        onEachFeature: (feature, layer) => {
+                            const department = feature?.properties?.D;
+
+                            // Agrupar las capas de cada departamento
+                            if (department) {
+                                if (!departmentLayers.current[department]) {
+                                    departmentLayers.current[department] = L.layerGroup().addTo(map);
+                                }
+                                departmentLayers.current[department].addLayer(layer);
+                            }
+
+                            // Añadir evento de clic para resaltar el departamento
+                            layer.on('click', () => {
+                                // Restablecer los estilos de todas las capas antes de resaltar el nuevo departamento
+                                resetAllLayersStyle();
+
+                                // Resaltar todas las capas del departamento seleccionado
+                                if (department && departmentLayers.current[department]) {
+                                    departmentLayers.current[department].eachLayer((deptLayer) => {
+                                        const highlightColor = departmentColors[department];
+                                        (deptLayer as L.Path).setStyle({
+                                            weight: 2,
+                                            color: highlightColor, // Contorno del mismo color que el relleno
+                                            fillColor: highlightColor, // Aplicar color al seleccionar
+                                            fillOpacity: 0.1, // Opacidad al seleccionar
+                                        });
+                                    });
+                                    // Mostrar el popup del departamento seleccionado
+                                    const center = layer.getBounds().getCenter();
+                                    L.popup()
+                                        .setLatLng(center)
+                                        .setContent(`<strong>Departamento seleccionado:</strong> <br>${department}`)
+                                        .openOn(map);
+                                }
+                            });
+                        },
+                    });
                 });
 
-            // Agregar interacción para seleccionar nuevos puntos en el mapa
-            map.on('click', function (e: L.LeafletMouseEvent) {
-                const { lat, lng } = e.latlng;
-                setSelectedPosition({ lat, lng });
-
-                // Eliminar todos los marcadores anteriores antes de añadir uno nuevo
-                map.eachLayer(function (layer) {
-                    // Asegurarse de que el layer tenga un popup antes de acceder a getContent()
-                    if (layer instanceof L.Marker) {
-                        const popup = layer.getPopup();
-                        const content = popup?.getContent();
-
-                        // Verificar si el contenido es de tipo string antes de usar .includes()
-                        if (typeof content === 'string' && !content.includes('Mi ubicación')) {
-                            map.removeLayer(layer);
-                        }
-                    }
+            // Función para restablecer los estilos de todas las capas
+            const resetAllLayersStyle = () => {
+                Object.keys(departmentLayers.current).forEach((department) => {
+                    departmentLayers.current[department].eachLayer((layer) => {
+                        (layer as L.Path).setStyle({
+                            color: '#202124', // Color del contorno negro
+                            weight: 0.8,
+                            opacity: 0.9,
+                            fillColor: 'transparent', // Sin relleno
+                            fillOpacity: 0, // Sin opacidad de relleno
+                        });
+                    });
                 });
-
-                // Colocar un nuevo marcador en la ubicación seleccionada con un efecto de vidrio borroso
-                L.marker([lat, lng])
-                    .addTo(map)
-                    .bindPopup(
-                        `<div class="custom-popup">
-                            <b>Coordenadas seleccionadas</b><br>
-                            Latitud: ${lat}<br>
-                            Longitud: ${lng}
-                        </div>`, { closeButton: false }
-                    )
-                    .openPopup();
-            });
+            };
         }
     }, [isClient]);
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center w-full h-screen">
-            {/* Mapa que ocupa todo el espacio */}
             <div className="w-full h-full" ref={mapRef}>
                 {/* El mapa será renderizado dentro de este div */}
             </div>
