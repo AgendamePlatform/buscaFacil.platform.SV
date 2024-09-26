@@ -58,6 +58,10 @@ export default function ClientLayout({
                         <FiBarChart size={24} className={`${isActive('/reports') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
                         {isSidebarExpanded && <span className="font-medium">Reports</span>}
                     </Link>
+                    <Link href="/cotizaciones" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/cotizaciones') ? 'bg-purple-800 text-white' : 'hover:bg-purple-600 text-gray-200'}`}>
+                        <FiBarChart size={24} className={`${isActive('/reports') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
+                        {isSidebarExpanded && <span className="font-medium">Cotizaciones</span>}
+                    </Link>
 
                     <Link href="/maps" className={`group flex items-center space-x-4 rounded-lg p-2 transition duration-300 ${isActive('/maps') ? 'bg-purple-800 text-white' : 'hover:bg-purple-600 text-gray-200'}`}>
                         <FiMap size={24} className={`${isActive('/maps') ? 'text-white' : 'text-gray-200 group-hover:text-white'}`} />
