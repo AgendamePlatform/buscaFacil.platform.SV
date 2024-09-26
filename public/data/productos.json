@@ -5,7 +5,8 @@
         "name": "Zenbook Pro 16X OLED (UX7602 , 11th Gen Intel)",
         "rating": 4.8,
         "sold": 18,
-        "companyLogo": "https://link-to-company-logo1.jpg"
+        "companyLogo": "https://link-to-company-logo1.jpg",
+        "condition": "nuevo"
     },
     {
         "productImage": "https://link-to-product-image2.jpg",
@@ -13,7 +14,8 @@
         "name": "MacBook Pro M1 2021",
         "rating": 4.9,
         "sold": 12,
-        "companyLogo": "https://link-to-company-logo2.jpg"
+        "companyLogo": "https://link-to-company-logo2.jpg",
+        "condition": "segunda mano"
     },
     {
         "productImage": "https://link-to-product-image3.jpg",
@@ -21,7 +23,8 @@
         "name": "Dell XPS 13",
         "rating": 4.7,
         "sold": 22,
-        "companyLogo": "https://link-to-company-logo3.jpg"
+        "companyLogo": "https://link-to-company-logo3.jpg",
+        "condition": "nuevo"
     },
     {
         "productImage": "https://link-to-product-image4.jpg",
@@ -29,7 +32,8 @@
         "name": "HP Spectre x360 14",
         "rating": 4.6,
         "sold": 15,
-        "companyLogo": "https://link-to-company-logo4.jpg"
+        "companyLogo": "https://link-to-company-logo4.jpg",
+        "condition": "segunda mano"
     },
     {
         "productImage": "https://link-to-product-image5.jpg",
@@ -37,7 +41,8 @@
         "name": "Microsoft Surface Laptop 4",
         "rating": 4.5,
         "sold": 20,
-        "companyLogo": "https://link-to-company-logo5.jpg"
+        "companyLogo": "https://link-to-company-logo5.jpg",
+        "condition": "nuevo"
     },
     {
         "productImage": "https://link-to-product-image6.jpg",
@@ -45,102 +50,79 @@
         "name": "Lenovo ThinkPad X1 Carbon",
         "rating": 4.9,
         "sold": 25,
-        "companyLogo": "https://link-to-company-logo6.jpg"
+        "companyLogo": "https://link-to-company-logo6.jpg",
+        "condition": "segunda mano"
     },
     {
-        "productImage": "https://link-to-product-image7.jpg",
-        "price": 2300,
-        "name": "Razer Blade 14",
+        "productImage": "https://link-to-product-image1.jpg",
+        "price": 2237,
+        "name": "Zenbook Pro 16X OLED (UX7602 , 11th Gen Intel)",
         "rating": 4.8,
-        "sold": 17,
-        "companyLogo": "https://link-to-company-logo7.jpg"
+        "sold": 18,
+        "companyLogo": "https://link-to-company-logo1.jpg",
+        "condition": "nuevo"
     },
     {
-        "productImage": "https://link-to-product-image8.jpg",
-        "price": 2700,
-        "name": "Alienware m15 R6",
-        "rating": 4.7,
-        "sold": 30,
-        "companyLogo": "https://link-to-company-logo8.jpg"
-    },
-    {
-        "productImage": "https://link-to-product-image9.jpg",
-        "price": 1600,
-        "name": "Acer Swift 3",
-        "rating": 4.4,
-        "sold": 14,
-        "companyLogo": "https://link-to-company-logo9.jpg"
-    },
-    {
-        "productImage": "https://link-to-product-image10.jpg",
-        "price": 1800,
-        "name": "Asus ROG Zephyrus G14",
+        "productImage": "https://link-to-product-image2.jpg",
+        "price": 1850,
+        "name": "MacBook Pro M1 2021",
         "rating": 4.9,
-        "sold": 35,
-        "companyLogo": "https://link-to-company-logo10.jpg"
+        "sold": 12,
+        "companyLogo": "https://link-to-company-logo2.jpg",
+        "condition": "segunda mano"
     },
     {
-        "productImage": "https://link-to-product-image11.jpg",
-        "price": 2000,
-        "name": "Gigabyte Aero 15 OLED",
-        "rating": 4.8,
-        "sold": 19,
-        "companyLogo": "https://link-to-company-logo11.jpg"
+        "productImage": "https://link-to-product-image3.jpg",
+        "price": 2500,
+        "name": "Dell XPS 13",
+        "rating": 4.7,
+        "sold": 22,
+        "companyLogo": "https://link-to-company-logo3.jpg",
+        "condition": "nuevo"
     },
     {
-        "productImage": "https://link-to-product-image12.jpg",
-        "price": 2200,
-        "name": "Apple MacBook Air M2",
+        "productImage": "https://link-to-product-image4.jpg",
+        "price": 1700,
+        "name": "HP Spectre x360 14",
         "rating": 4.6,
-        "sold": 27,
-        "companyLogo": "https://link-to-company-logo12.jpg"
+        "sold": 15,
+        "companyLogo": "https://link-to-company-logo4.jpg",
+        "condition": "segunda mano"
     },
     {
-        "productImage": "https://link-to-product-image13.jpg",
-        "price": 2600,
-        "name": "HP Envy 15",
-        "rating": 4.5,
-        "sold": 21,
-        "companyLogo": "https://link-to-company-logo13.jpg"
+        "productImage": "https://link-to-product-image1.jpg",
+        "price": 2237,
+        "name": "Zenbook Pro 16X OLED (UX7602 , 11th Gen Intel)",
+        "rating": 4.8,
+        "sold": 18,
+        "companyLogo": "https://link-to-company-logo1.jpg",
+        "condition": "nuevo"
     },
     {
-        "productImage": "https://link-to-product-image14.jpg",
-        "price": 1750,
-        "name": "Asus VivoBook S15",
-        "rating": 4.7,
-        "sold": 13,
-        "companyLogo": "https://link-to-company-logo14.jpg"
-    },
-    {
-        "productImage": "https://link-to-product-image15.jpg",
-        "price": 2400,
-        "name": "Dell G5 15 SE",
+        "productImage": "https://link-to-product-image2.jpg",
+        "price": 1850,
+        "name": "MacBook Pro M1 2021",
         "rating": 4.9,
-        "sold": 24,
-        "companyLogo": "https://link-to-company-logo15.jpg"
+        "sold": 12,
+        "companyLogo": "https://link-to-company-logo2.jpg",
+        "condition": "segunda mano"
     },
     {
-        "productImage": "https://link-to-product-image16.jpg",
-        "price": 1550,
-        "name": "Lenovo Legion 5 Pro",
-        "rating": 4.5,
-        "sold": 29,
-        "companyLogo": "https://link-to-company-logo16.jpg"
-    },
-    {
-        "productImage": "https://link-to-product-image17.jpg",
-        "price": 1450,
-        "name": "Asus TUF Dash F15",
-        "rating": 4.4,
-        "sold": 16,
-        "companyLogo": "https://link-to-company-logo17.jpg"
-    },
-    {
-        "productImage": "https://link-to-product-image18.jpg",
-        "price": 1950,
-        "name": "MSI GS66 Stealth",
+        "productImage": "https://link-to-product-image3.jpg",
+        "price": 2500,
+        "name": "Dell XPS 13",
         "rating": 4.7,
-        "sold": 32,
-        "companyLogo": "https://link-to-company-logo18.jpg"
+        "sold": 22,
+        "companyLogo": "https://link-to-company-logo3.jpg",
+        "condition": "nuevo"
+    },
+    {
+        "productImage": "https://link-to-product-image4.jpg",
+        "price": 1700,
+        "name": "HP Spectre x360 14",
+        "rating": 4.6,
+        "sold": 15,
+        "companyLogo": "https://link-to-company-logo4.jpg",
+        "condition": "segunda mano"
     }
 ]
