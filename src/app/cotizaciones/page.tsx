@@ -27,36 +27,36 @@ export default function Page() {
 
     // Cargar productos desde el JSON
     useEffect(() => {
-        fetch('/data/productos.json')
-            .then(response => response.json())
-            .then(data => {
+        const cargarProductos = async () => {
+            try {
+                const response = await fetch('/data/productos.json');
+                if (!response.ok) {
+                    throw new Error(`Error al cargar productos: ${response.statusText}`);
+                }
+                const data = await response.json();
                 setProductos(data);
                 setProductosFiltrados(data); // Inicialmente todos los productos
-            })
-            .catch(error => console.error('Error cargando productos:', error));
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+            }
+        };
+
+        cargarProductos();
     }, []);
 
-    // Función para aplicar los filtros
+    //FILTROS ===========================
     useEffect(() => {
         let productosFiltrados = productos;
-
         // Filtro por precio
-        if (minPrecio !== '') {
+        if (minPrecio !== '')
             productosFiltrados = productosFiltrados.filter(producto => producto.price >= Number(minPrecio));
-        }
-        if (maxPrecio !== '') {
+        if (maxPrecio !== '')
             productosFiltrados = productosFiltrados.filter(producto => producto.price <= Number(maxPrecio));
-        }
-
         // Filtro por condición (nuevo o segunda mano)
-        if (condicionNuevo) {
+        if (condicionNuevo)
             productosFiltrados = productosFiltrados.filter(producto => producto.condition === 'nuevo');
-        }
-        if (condicionSegundaMano) {
+        if (condicionSegundaMano)
             productosFiltrados = productosFiltrados.filter(producto => producto.condition === 'segunda mano');
-        }
-
-        // Aquí puedes agregar más filtros como proveedores verificados, garantía de transacción, etc.
 
         setProductosFiltrados(productosFiltrados);
     }, [minPrecio, maxPrecio, condicionNuevo, condicionSegundaMano, proveedoresVerificados, garantiaTransaccion]);

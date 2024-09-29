@@ -13,6 +13,7 @@
     "@types/geojson": "^7946.0.14",
     "@types/googlemaps": "^3.43.3",
     "axios": "^1.7.7",
+    "fs": "^0.0.1-security",
     "leaflet": "^1.9.4",
     "next": "14.2.8",
     "next-auth": "^4.24.7",
