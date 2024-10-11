@@ -61,13 +61,13 @@ export default function Header({ isSidebarExpanded, toggleSidebarSize, toggleSid
                 <FiMenu className='text-white' size={24} />
             </button>
 
-            {/* Botón para cambiar el tamaño del sidebar en pantallas grandes */}
+            {/* Botón para cambiar el tamaño del sidebar en pantallas grandes
             <button
                 className="p-3 bg-azulito rounded-lg mr-[2%] hidden sm:block hover:bg-purple-900 transition duration-300 shadow-lg"
                 onClick={toggleSidebarSize}
             >
                 {isSidebarExpanded ? <FaArrowAltCircleLeft className='text-white' size={24} /> : <FaArrowAltCircleRight className='text-white' size={24} />}
-            </button>
+            </button> */}
 
             {/* Filtro y barra de búsqueda */}
             <div className="flex items-center w-full justify-between">

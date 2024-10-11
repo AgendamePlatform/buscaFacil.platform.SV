@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import TaskMarketPlace from '@/components/TaskMarketPlace';
+import Combobox from '@/components/Combobox';
 
 const products = [
     {
@@ -95,7 +96,6 @@ const products = [
         previousPrice: 1500,
     }
 ];
-
 // Definir la interfaz para los props de FilterSection
 interface FilterSectionProps {
     selectedDepartment: string;
@@ -116,38 +116,25 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     setShowFilters,
 }) => {
     return (
-        <div className={`w-full bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6 md:sticky top-4 h-[50%] ${showFilters ? 'block' : 'hidden'} md:block`}>
-            <h2 className="text-xl font-bold mb-4">Filtros</h2>
+        <div className={`w-full bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg mb-6 md:sticky top-4 h-auto ${showFilters ? 'block' : 'hidden'} md:block`}>
+            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200">Filtros</h2>
             <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Departamento</label>
-                <select
-                    className="mt-1 block w-full h-12 rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm bg-white dark:bg-gray-700 dark:text-white hover:bg-purple-100 dark:hover:bg-purple-700 hover:shadow-md transition duration-300 ease-in-out"
-                    value={selectedDepartment}
-                    onChange={(e) => setSelectedDepartment(e.target.value)}
-                >
-                    <option value="">Todos</option>
-                    <option value="San Salvador">San Salvador</option>
-                    <option value="La Libertad">La Libertad</option>
-                    <option value="San Miguel">San Miguel</option>
-                    <option value="Santa Ana">Santa Ana</option>
-                </select>
+                <Combobox
+                    options={['Todos', 'San Salvador', 'La Libertad', 'San Miguel', 'Santa Ana']}
+                    label="Departamento"
+                    onChange={(selected: string) => setSelectedDepartment(selected)}
+                />
             </div>
             <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Estado</label>
-                <select
-                    className="mt-1 block w-full h-12 rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm bg-white dark:bg-gray-700 dark:text-white hover:bg-purple-100 dark:hover:bg-purple-700 hover:shadow-md transition duration-300 ease-in-out"
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                >
-                    <option value="">Todos</option>
-                    <option value="Nuevo">Nuevo</option>
-                    <option value="Usado">Usado</option>
-                </select>
+                <Combobox
+                    options={['Todos', 'Nuevo', 'Usado']}
+                    label="Estado"
+                    onChange={(selected: string) => setSelectedState(selected)}
+                />
             </div>
             <div className="mb-4">
-                <h2 className="text-xl font-bold mb-2">Anuncios</h2>
-                {/* Aquí puedes incluir los anuncios de Google Ads */}
-                <div className="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-300">
+                <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-200">Anuncios</h2>
+                <div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-300">
                     Espacio para Google Ads
                 </div>
             </div>
@@ -166,9 +153,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({
 
 export default function Page() {
     const [isClient, setIsClient] = useState(false);
-    const [selectedDepartment, setSelectedDepartment] = useState<string>('');
-    const [selectedState, setSelectedState] = useState<string>('');
-    const [showFilters, setShowFilters] = useState<boolean>(false); // Estado para mostrar/ocultar filtros en móviles
+    const [selectedDepartment, setSelectedDepartment] = useState<string>('Todos');
+    const [selectedState, setSelectedState] = useState<string>('Todos');
+    const [showFilters, setShowFilters] = useState<boolean>(false);
 
     useEffect(() => {
         setIsClient(true);
@@ -176,20 +163,20 @@ export default function Page() {
 
     if (!isClient) return null;
 
-    // Filtrar productos según los filtros seleccionados
     const filteredProducts = products.filter((product) => {
         return (
-            (selectedDepartment === '' || product.department === selectedDepartment) &&
-            (selectedState === '' || (selectedState === 'Nuevo' && product.isNew) || (selectedState === 'Usado' && !product.isNew))
+            (selectedDepartment === 'Todos' || product.department === selectedDepartment) &&
+            (selectedState === 'Todos' || (selectedState === 'Nuevo' && product.isNew) || (selectedState === 'Usado' && !product.isNew))
         );
     });
 
     return (
-        <div className="container mx-auto px-4 py-8 bg-bgprimaryLigth dark:bg-bgDarkOscuro">
+        <div className="container mx-auto px-1 py-6 bg-gray-50 dark:bg-bgdark h-screen overflow-hidden">
+            {/* Encabezado de resultados */}
             <div className="mb-6 flex justify-between items-center">
-                <h1 className="text-3xl font-bold">Resultados</h1>
+                <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100">Resultados</h1>
                 <Link href="/marketplace/create">
-                    <button className="px-4 py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button className="px-3 py-2 sm:px-4 sm:py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         Vender Producto
                     </button>
                 </Link>
@@ -199,15 +186,16 @@ export default function Page() {
             <div className="md:hidden mb-4">
                 <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="px-3 py-2 sm:px-4 sm:py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                     {showFilters ? 'Ocultar Filtros' : 'Ver Filtros'}
                 </button>
             </div>
 
-            <div className="flex">
-                {/* Columna izquierda: Filtros y anuncios */}
-                <div className={`w-full md:w-1/4 pr-4 overflow-y-hidden ${showFilters ? 'block' : 'hidden'} md:block`}>
+            {/* Contenedor general con filtros y productos */}
+            <div className="flex h-[calc(100vh-10rem)]">
+                {/* Sección de filtros - permanece fija en pantallas grandes */}
+                <div className={`w-full md:w-1/4 pr-1 overflow-y-hidden ${showFilters ? 'block' : 'hidden'} md:block`}>
                     <FilterSection
                         selectedDepartment={selectedDepartment}
                         setSelectedDepartment={setSelectedDepartment}
@@ -218,8 +206,8 @@ export default function Page() {
                     />
                 </div>
 
-                {/* Columna derecha: Tarjetas de productos */}
-                <div className="w-full md:w-3/4 overflow-y-auto h-[calc(100vh-4rem)]">
+                {/* Sección de productos - es la única que puede hacer scroll */}
+                <div className="w-full md:w-3/4 overflow-y-auto h-full">
                     {filteredProducts.map((product) => (
                         <Link href={`/marketplace/${product.id}`} key={product.id}>
                             <div>

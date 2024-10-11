@@ -33,7 +33,7 @@ const TaskMarketPlace: React.FC<PublicationCardProps> = ({
     discountPrice,
 }) => {
     return (
-        <div className="w-[90%] mx-auto bg-white dark:bg-gray-800 rounded-lg border border-gray-100 shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 mb-6 transition-all duration-300 cursor-pointer hover:shadow-lg hover:scale-[1.01] relative">
+        <div className="w-[90%] mx-auto bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-none shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 mb-6 transition-all duration-300 cursor-pointer hover:shadow-lg hover:scale-[1.01] relative">
             {/* Información del usuario en la esquina superior derecha */}
             <div className="absolute top-4 right-4 flex items-center space-x-2">
                 <img src={userImage} alt={userName} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-gray-300 dark:border-gray-600 shadow-md" />
@@ -41,7 +41,7 @@ const TaskMarketPlace: React.FC<PublicationCardProps> = ({
             </div>
 
             {/* Imagen principal */}
-            <div className="w-full sm:w-1/3 h-48 sm:h-auto rounded-lg overflow-hidden flex items-center justify-center bg-gray-200 border">
+            <div className="w-full sm:w-1/3 h-48 sm:h-auto rounded-lg overflow-hidden flex items-center justify-center bg-gray-200 border dark:border-gray-700">
                 {images.length > 0 ? (
                     <img src={images[0]} alt={title} className="object-cover h-full w-full" />
                 ) : (
@@ -55,13 +55,13 @@ const TaskMarketPlace: React.FC<PublicationCardProps> = ({
                 <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-2">{title}</h2>
                     <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">{department} - {publicationDate}</p>
-                    <p className="mt-2 sm:mt-4 text-gray-700 dark:text-gray-300 line-clamp-3">{details}</p>
+                    <p className="mt-2 sm:mt-4 text-gray-700 dark:text-gray-300 line-clamp-3 text-lg">{details}</p>
 
                     {/* Mostrar el precio */}
                     <div className="mt-4">
                         {discountPrice ? (
                             <div className="flex items-center space-x-2">
-                                <span className="text-lg sm:text-2xl font-bold text-red-600">${discountPrice}</span>
+                                <span className="text-lg sm:text-2xl font-bold text-red-600 dark:text-red-500">${discountPrice}</span>
                                 <span className="text-sm text-gray-500 line-through">${price}</span>
                             </div>
                         ) : (
